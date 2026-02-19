@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Performance Dashboard</title>
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#121212">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+</head>
+<body>
+
+<!-- FULL APP CONTENT -->
+<!-- NOTE: This is the working production build -->
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js');
+  });
+}
+</script>
+
+</body>
+</html>
