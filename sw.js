@@ -1,60 +1,31 @@
-const CACHE_NAME = 'perf-dash-cache-v1';
-const ASSETS_TO_CACHE = [
+const CACHE_NAME = 'perf-hub-v5';
+const ASSETS = [
   '/',
   '/index.html',
-  '/manifest.json',
-  '/icon-192.png',
-  '/icon-512.png',
-  '/apple-touch-icon.png'
+  '/manifest.json'
 ];
 
-// Install - cache app shell
-self.addEventListener('install', (evt) => {
+self.addEventListener('install', event => {
+  event.waitUntil(
+    caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS))
+  );
   self.skipWaiting();
-  evt.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS_TO_CACHE.map(url => new Request(url, {cache: 'reload'}))))
+});
+
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(keys.map(key => {
+        if (key !== CACHE_NAME) return caches.delete(key);
+      }))
+    ).then(() => self.clients.claim())
   );
 });
 
-// Activate - cleanup old caches
-self.addEventListener('activate', (evt) => {
-  evt.waitUntil(
-    caches.keys().then(keys => Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k))))
-  );
-  self.clients.claim();
-});
-
-// Fetch - Cache-first for same-origin requests, network fallback, and stale-while-revalidate for navigation
-self.addEventListener('fetch', (evt) => {
-  if (evt.request.method !== 'GET') return;
-  // navigation requests: try network first, fallback to cache
-  if (evt.request.mode === 'navigate') {
-    evt.respondWith(
-      fetch(evt.request).then(resp => {
-        const copy = resp.clone();
-        caches.open(CACHE_NAME).then(cache => cache.put(evt.request, copy));
-        return resp;
-      }).catch(() => caches.match('/index.html'))
-    );
-    return;
-  }
-  // other requests: try cache, then network, update cache
-  evt.respondWith(
-    caches.match(evt.request).then(cached => {
-      if (cached) {
-        // update cache in background
-        fetch(evt.request).then(resp => {
-          if (!resp || resp.status !== 200) return;
-          caches.open(CACHE_NAME).then(cache => cache.put(evt.request, resp.clone()));
-        }).catch(()=>{});
-        return cached;
-      }
-      return fetch(evt.request).then(resp => {
-        if (!resp || resp.status !== 200) return resp;
-        const respClone = resp.clone();
-        caches.open(CACHE_NAME).then(cache => cache.put(evt.request, respClone));
-        return resp;
-      }).catch(() => new Response('', {status: 503, statusText: 'Offline'}));
-    })
+self.addEventListener('fetch', event => {
+  event.respondWith(
+    caches.match(event.request).then(response =>
+      response || fetch(event.request)
+    )
   );
 });
