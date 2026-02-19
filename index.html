@@ -3,525 +3,276 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>7-Day Olympic Performance Hub v5.0</title>
-<meta name="description" content="Weekly plan, recipes, and shopping list for a 56yo Olympic weightlifter." />
-<link rel="manifest" href="/manifest.json">
+<title>7-Day Olympic Nutrition App v5.0</title>
+
 <meta name="theme-color" content="#07131b">
+
 <style>
-/* ========= Dark Elite Performance Theme (v5) ========= */
 :root{
   --bg:#061219;
   --panel:#0d1620;
-  --panel-2:#101822;
-  --muted:#98a9b2;
+  --panel-2:#111b26;
   --text:#e8f2f7;
+  --muted:#9fb0bb;
   --accent:#2ed07a;
-  --accent-2:#f3a712;
-  --border: rgba(255,255,255,0.04);
-  --glass: rgba(255,255,255,0.02);
-  --radius:14px;
-  --maxw:1100px;
+  --accent2:#f3a712;
+  --border:rgba(255,255,255,0.05);
+  --radius:16px;
 }
+
 *{box-sizing:border-box}
-html,body{height:100%;margin:0;background:linear-gradient(180deg,#051018 0%, #061219 100%);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial; -webkit-font-smoothing:antialiased}
-.container{max-width:var(--maxw);margin:18px auto;padding:16px}
-.header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:12px}
-.brand{display:flex;flex-direction:column;gap:6px}
-.title{font-size:1.18rem;font-weight:800;letter-spacing:0.3px}
-.profile{color:var(--muted);font-size:0.9rem}
-.status{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
-.pill{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:linear-gradient(90deg, rgba(46,208,122,0.06), rgba(243,167,18,0.03));border:1px solid var(--border);font-weight:700;color:var(--text);font-size:0.95rem}
+html,body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial;
+  background:linear-gradient(180deg,#051018 0%, #061219 100%);
+  color:var(--text);
+}
 
-/* quick nav */
-.quick-nav{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-.nav-link{background:transparent;border:1px solid var(--border);padding:8px 10px;border-radius:10px;color:var(--muted);text-decoration:none;font-weight:700;font-size:0.88rem}
-.nav-link:hover{color:var(--text);transform:translateY(-2px);background:rgba(255,255,255,0.01)}
+.container{
+  max-width:1100px;
+  margin:auto;
+  padding:20px;
+}
 
-/* layout */
-.layout{display:grid;gap:14px;grid-template-columns:1fr}
-@media(min-width:980px){ .layout{grid-template-columns:2fr 420px} }
+h1{
+  font-size:1.2rem;
+  margin:0;
+}
 
-/* card */
-.card{background:linear-gradient(180deg,var(--panel),var(--panel-2));border-radius:var(--radius);border:1px solid var(--border);padding:14px;box-shadow:0 8px 28px rgba(0,0,0,0.6)}
-.section-title{display:inline-block;padding-left:10px;border-left:4px solid var(--accent);color:var(--accent);font-weight:800;margin-bottom:8px}
-.small{color:var(--muted);font-size:0.92rem}
+.small{
+  color:var(--muted);
+  font-size:0.9rem;
+}
 
-/* days */
-.day{margin-bottom:12px;border-radius:10px;overflow:hidden}
-.day-header{display:flex;align-items:center;justify-content:space-between;padding:10px;border-radius:10px;background:rgba(255,255,255,0.01);cursor:pointer;gap:12px}
-.day-header strong{font-size:0.98rem}
-.day-meta{color:var(--muted);font-size:0.86rem}
-.badge{background:var(--accent-2);color:#111;padding:6px 10px;border-radius:999px;font-weight:800}
+.header{
+  display:flex;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-bottom:20px;
+}
 
-/* table */
-.table{width:100%;border-collapse:collapse;margin-top:8px}
-.table th{color:var(--accent);text-align:left;padding:8px 6px;font-size:0.86rem;border-bottom:1px solid rgba(255,255,255,0.02)}
-.table td{padding:8px 6px;border-bottom:1px dashed rgba(255,255,255,0.02);color:var(--muted);font-size:0.92rem}
-.expand{display:none;padding-top:10px;color:var(--muted)}
+.pill{
+  background:rgba(255,255,255,0.05);
+  padding:8px 14px;
+  border-radius:999px;
+  font-weight:600;
+}
 
-/* shopping */
-.controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
-.btn{background:transparent;border:1px solid var(--border);padding:8px 10px;border-radius:10px;color:var(--text);cursor:pointer;font-weight:700}
-.btn.primary{background:linear-gradient(90deg,var(--accent), #18c66b);color:#021a11;border:none}
-.shopping-list{list-style:none;padding:0;margin:0}
-.shopping-list li{display:flex;align-items:center;padding:12px;border-radius:10px;border:1px solid transparent;margin-bottom:8px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00))}
-.shopping-list input{transform:scale(1.05);margin-right:12px}
+.quick-nav{
+  margin:20px 0;
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
 
-/* day-picker modal */
-.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:none;align-items:center;justify-content:center;z-index:300}
-.picker{background:linear-gradient(180deg,var(--panel),var(--panel-2));border-radius:12px;padding:16px;border:1px solid var(--border);width:92%;max-width:420px}
-.option-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
-.option-btn{background:transparent;border:1px solid var(--border);padding:8px;border-radius:8px;color:var(--muted);cursor:pointer}
+.quick-nav a{
+  padding:6px 10px;
+  border-radius:10px;
+  background:var(--panel);
+  border:1px solid var(--border);
+  text-decoration:none;
+  color:var(--muted);
+  font-weight:600;
+  font-size:0.85rem;
+}
 
-/* footer */
-.footer{margin-top:14px;color:var(--muted);font-size:0.9rem}
-.kbd{background:#07131b;border:1px solid var(--border);padding:4px 6px;border-radius:6px;font-size:0.85rem}
+.quick-nav a:hover{
+  color:var(--text);
+  background:var(--panel-2);
+}
+
+.card{
+  background:linear-gradient(180deg,var(--panel),var(--panel-2));
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:18px;
+  margin-bottom:16px;
+}
+
+.section-title{
+  font-weight:700;
+  color:var(--accent);
+  border-left:4px solid var(--accent);
+  padding-left:10px;
+  margin-bottom:10px;
+}
+
+.shopping-list{
+  list-style:none;
+  padding:0;
+}
+
+.shopping-list li{
+  padding:10px 0;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+}
+
+.shopping-list input{
+  margin-right:12px;
+}
+
+.day{
+  margin-bottom:14px;
+}
+
+.day-header{
+  display:flex;
+  justify-content:space-between;
+  cursor:pointer;
+  padding:10px;
+  background:rgba(255,255,255,0.02);
+  border-radius:10px;
+}
+
+.day-header strong{
+  font-size:0.95rem;
+}
+
+.day-content{
+  display:none;
+  margin-top:10px;
+}
+
+.table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:0.9rem;
+}
+
+.table th{
+  text-align:left;
+  color:var(--accent);
+  padding:6px 0;
+}
+
+.table td{
+  padding:6px 0;
+  border-bottom:1px dashed rgba(255,255,255,0.05);
+  color:var(--muted);
+}
+
+.btn{
+  padding:6px 10px;
+  border-radius:8px;
+  border:1px solid var(--border);
+  background:transparent;
+  color:var(--text);
+  cursor:pointer;
+}
+
+.footer{
+  margin-top:30px;
+  font-size:0.8rem;
+  color:var(--muted);
+}
 </style>
 </head>
 <body>
+
 <div class="container">
-  <header class="header">
-    <div class="brand">
-      <div class="title">📱 7-Day Olympic Performance Hub v5.0</div>
-      <div class="profile small">Athlete: <strong>56 Years</strong> | <strong>93kg</strong> | <strong>179cm</strong> • Goal: Strength Accretion & Body Recomposition</div>
+
+<div class="header">
+  <div>
+    <h1>📱 7-Day Olympic Nutrition App v5.0</h1>
+    <div class="small">
+      Athlete Profile: 56 Years | 93kg | 177cm<br>
+      Goal: Strength Accretion & Body Toning
     </div>
-    <div class="status">
-      <div class="pill" id="statusPill">🟡 Yellow Recovery (63%) • Rest Day (Thursday, Feb 19)</div>
-      <div style="margin-top:6px">
-        <button id="changeDayBtn" class="btn">Change Selected Day</button>
-      </div>
-    </div>
-  </header>
-
-  <nav class="quick-nav" aria-label="Quick navigation">
-    <a class="nav-link" href="#shopping">🛒 SHOPPING</a>
-    <a class="nav-link" href="#mon-tue">🟡 MON-TUE</a>
-    <a class="nav-link" href="#wednesday">🟢 WED</a>
-    <a class="nav-link" href="#thursday">🟡 THU</a>
-    <a class="nav-link" href="#friday">🟢 FRI</a>
-    <a class="nav-link" href="#saturday">🟡 SAT</a>
-    <a class="nav-link" href="#sunday">🔵 SUN</a>
-  </nav>
-
-  <main class="layout" role="main">
-    <!-- left column: calendar and recipes -->
-    <section class="card left">
-      <div class="section-title">📅 DAILY SCHEDULES & RECIPES</div>
-      <div class="small" style="margin-top:8px">Tap a day to expand. The Day Picker lets you persist a chosen date and auto-expand the matching day.</div>
-
-      <!-- MONDAY & TUESDAY -->
-      <article id="mon-tue" class="day" data-day="MonTue">
-        <div class="day-header" tabindex="0" role="button" aria-expanded="false" onclick="toggleDay(this)">
-          <div>
-            <strong>🟡 MONDAY & TUESDAY | Training (3 PM)</strong>
-            <div class="day-meta small">Animal-based protein hits to maximize strength.</div>
-          </div>
-          <div class="badge">High Intensity</div>
-        </div>
-        <div class="expand">
-          <table class="table" aria-label="Mon Tue meals">
-            <thead><tr><th>Time</th><th>Meal</th><th>Ingredients / Method</th><th>Macros</th></tr></thead>
-            <tbody>
-              <tr><td>08:30</td><td>Master’s Recovery Frittata</td><td>4 Eggs, 30g Cheese, 100g Spinach, 50g Cherry Tomatoes, 150g Potato. Sauté potatoes & veggies; whisk eggs & pour; cook medium-low.</td><td>38g P / 35g C / 28g F</td></tr>
-              <tr><td>12:30</td><td>Pre-Tr Power Bowl</td><td>170g Chicken, 80g dry oats, 50g tomatoes. Roast chicken; serve over savory oats.</td><td>58g P / 55g C / 10g F</td></tr>
-              <tr><td>17:00</td><td>Post-Tr Recovery Shake</td><td>1.5 scoops whey (45g), 250ml almond milk, 1 banana, 50g berries. Blend.</td><td>~45g P / 50g C</td></tr>
-              <tr><td>19:30</td><td>Hypertrophy Beef Skillet</td><td>170g beef, 100g dry pasta, 150g sauce, 50g spinach. Brown beef; toss with pasta & sauce.</td><td>~48g P / 80g C / 28g F</td></tr>
-              <tr><td>22:00</td><td>Pre-Sleep Casein Hit</td><td>250g Greek yogurt + 20g pecans.</td><td>~30g P</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </article>
-
-      <!-- WEDNESDAY -->
-      <article id="wednesday" class="day" data-day="Wed">
-        <div class="day-header" tabindex="0" role="button" aria-expanded="false" onclick="toggleDay(this)">
-          <div>
-            <strong>🟢 WEDNESDAY | Restricted Training (3 PM)</strong>
-            <div class="day-meta small">Meat/dairy/egg-free emphasis using tuna & whey.</div>
-          </div>
-          <div class="badge" style="background:var(--accent)">Restricted</div>
-        </div>
-        <div class="expand">
-          <table class="table" aria-label="Wednesday meals">
-            <thead><tr><th>Time</th><th>Meal</th><th>Ingredients / Method</th><th>Macros</th></tr></thead>
-            <tbody>
-              <tr><td>08:30</td><td>Savory Whey-Oat Mash</td><td>80g oats, 300ml almond milk, 1.5 scoops whey, 1 tbsp PB. Cook oats, cool 2 mins, whisk in whey.</td><td>48g P / 60g C / 18g F</td></tr>
-              <tr><td>12:30</td><td>Pre-Tr Tuna & Potato Roast</td><td>1 can tuna (140g), 300g potatoes, 100g spinach. Roast potatoes at 400°F; toss with tuna & spinach.</td><td>42g P / 65g C / 15g F</td></tr>
-              <tr><td>17:00</td><td>Post-Tr Fruit & Nut Smoothie</td><td>1.5 scoops whey, 1 banana, 300ml almond milk, 20g almonds.</td><td>~45g P / 35g C / 12g F</td></tr>
-              <tr><td>19:30</td><td>Savory Tuna Marinara</td><td>100g pasta, 150g sauce, 1 can tuna, 1 scoop whey whisked into cold water, 50g spinach. Heat LOW; stir in whey paste & tuna.</td><td>55g P / 80g C / 18g F</td></tr>
-              <tr><td>22:00</td><td>Night Repair</td><td>30g pistachios + 300ml almond milk.</td><td>~8-10g P</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </article>
-
-      <!-- THURSDAY -->
-      <article id="thursday" class="day" data-day="Thu">
-        <div class="day-header" tabindex="0" role="button" aria-expanded="false" onclick="toggleDay(this)">
-          <div>
-            <strong>🟡 THURSDAY | Rest & Tone (Today)</strong>
-            <div class="day-meta small">Moderate carbs to facilitate fat oxidation.</div>
-          </div>
-          <div class="badge">Rest</div>
-        </div>
-        <div class="expand">
-          <table class="table" aria-label="Thursday meals">
-            <thead><tr><th>Time</th><th>Meal</th><th>Ingredients / Method</th><th>Macros / Notes</th></tr></thead>
-            <tbody>
-              <tr><td>09:00</td><td>Toning Frittata (No Potato)</td><td>4 eggs, 50g cheese, 100g spinach, 50g tomatoes.</td><td>-</td></tr>
-              <tr><td>13:00</td><td>Lean Chicken & Spinach Roast</td><td>200g chicken, 150g potato, 2 cups spinach. Roast chicken & potato; serve over spinach.</td><td>65g P / 30g C / 8g F</td></tr>
-              <tr><td>16:30</td><td>Mid-Day Yogurt Bolus</td><td>300g Greek yogurt + 50g fruit.</td><td>-</td></tr>
-              <tr><td>19:30</td><td>Ground Beef Skillet</td><td>170g beef, 150g spinach, 30g cheese (no pasta/potato).</td><td>Lower carbs</td></tr>
-              <tr><td>21:30</td><td>Night Repair Pudding</td><td>1.5 scoops whey + 150ml almond milk, whisk to pudding.</td><td>-</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </article>
-
-      <!-- FRIDAY -->
-      <article id="friday" class="day" data-day="Fri">
-        <div class="day-header" tabindex="0" role="button" aria-expanded="false" onclick="toggleDay(this)">
-          <div>
-            <strong>🟢 FRIDAY | Restricted Training (3 PM)</strong>
-            <div class="day-meta small">Glycogen loading for Saturday morning.</div>
-          </div>
-          <div class="badge" style="background:var(--accent)">Load</div>
-        </div>
-        <div class="expand">
-          <table class="table" aria-label="Friday meals">
-            <thead><tr><th>Time</th><th>Meal</th><th>Ingredients / Method</th><th>Macros</th></tr></thead>
-            <tbody>
-              <tr><td>08:30</td><td>Morning Fuel Smoothie</td><td>1.5 scoops whey, 50g oats, 1 banana, 300ml almond milk.</td><td>~45g P / 60g C</td></tr>
-              <tr><td>12:30</td><td>Peanut Noodle Pre-Tr Bowl</td><td>100g dry pasta, 2 tbsp PB, 1 can tuna, spinach. Mix PB with hot pasta water to make sauce.</td><td>-</td></tr>
-              <tr><td>17:00</td><td>Recovery Bolus</td><td>1.5 scoops whey, banana, fruit, almond milk.</td><td>-</td></tr>
-              <tr><td>19:30</td><td>The Glycogen Load</td><td>150g pasta, 150g sauce, 1 can tuna, 1 scoop whey, 200g boiled potato. Whisk whey into cold sauce first.</td><td>62g P / 145g C / 22g F</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </article>
-
-      <!-- SATURDAY -->
-      <article id="saturday" class="day" data-day="Sat">
-        <div class="day-header" tabindex="0" role="button" aria-expanded="false" onclick="toggleDay(this)">
-          <div>
-            <strong>🟡 SATURDAY | Peak Power (9 AM)</strong>
-            <div class="day-meta small">Rapid energy for explosive lifting.</div>
-          </div>
-          <div class="badge">Peak</div>
-        </div>
-        <div class="expand">
-          <table class="table" aria-label="Saturday meals">
-            <thead><tr><th>Time</th><th>Meal</th><th>Ingredients</th></tr></thead>
-            <tbody>
-              <tr><td>07:30</td><td>Pre-Session Liquid Fuel</td><td>1.5 scoops whey, 1 banana, 250ml almond milk (blended).</td></tr>
-              <tr><td>11:00</td><td>Recovery Brunch Skillet</td><td>4 eggs, 250g potatoes, 50g cheese, 100g spinach.</td></tr>
-              <tr><td>14:30</td><td>Power Lunch</td><td>150g chicken, 250g Greek yogurt, 50g fruit.</td></tr>
-              <tr><td>18:30</td><td>Strength Dinner</td><td>170g beef, 80g dry pasta, sauce, spinach.</td></tr>
-              <tr><td>21:30</td><td>CNS Stabilization</td><td>30g mixed nuts, 300ml almond milk.</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </article>
-
-      <!-- SUNDAY -->
-      <article id="sunday" class="day" data-day="Sun">
-        <div class="day-header" tabindex="0" role="button" aria-expanded="false" onclick="toggleDay(this)">
-          <div>
-            <strong>🔵 SUNDAY | Systemic Reset</strong>
-            <div class="day-meta small">Omega-3 and minerals for CNS restoration.</div>
-          </div>
-          <div class="badge" style="background:#41a3ff">Reset</div>
-        </div>
-        <div class="expand">
-          <table class="table" aria-label="Sunday meals">
-            <thead><tr><th>Time</th><th>Meal</th><th>Ingredients</th><th>Macros</th></tr></thead>
-            <tbody>
-              <tr><td>09:30</td><td>Eggs & Fruit Plate</td><td>4 eggs scrambled, 1 banana, 1 cup fruit.</td><td>-</td></tr>
-              <tr><td>13:30</td><td>Omega Tuna Salad</td><td>2 cans tuna (280g), 50g spinach, 50g tomatoes, 20g walnuts/pecans.</td><td>65g P / 15g C / 24g F</td></tr>
-              <tr><td>16:30</td><td>PB Snack</td><td>1 banana, 2 tbsp peanut butter.</td><td>-</td></tr>
-              <tr><td>19:30</td><td>Lean Chicken Roast</td><td>200g chicken, 150g potato, 100g spinach.</td><td>-</td></tr>
-              <tr><td>22:00</td><td>Night Repair Pudding</td><td>1.5 scoops whey, 150ml almond milk, 15g pistachios.</td><td>-</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </article>
-
-      <!-- WHOOP Auto-Reg -->
-      <section class="card" style="margin-top:12px">
-        <div class="section-title">⚙️ WHOOP AUTO-REGULATION ENGINE</div>
-        <div class="small" style="margin-top:8px">
-          <ul>
-            <li>🟢 <strong>Green Recovery &gt;67%</strong>: Add 30g dry pasta or 1 potato to Post-Workout.</li>
-            <li>🔴 <strong>Red Recovery &lt;33%</strong>: Decrease volume 20% and increase healthy fats by ~20g at night.</li>
-          </ul>
-        </div>
-      </section>
-    </section>
-
-    <!-- right column: shopping & actions -->
-    <aside class="card right" style="min-width:260px">
-      <div class="section-title">🛒 WEEKLY SHOPPING LIST (Tap to Check)</div>
-      <div class="small" style="margin-top:8px;margin-bottom:8px">Quantities calibrated for five 1.5-hour Oly sessions and 93kg body mass.</div>
-
-      <div class="controls">
-        <button id="clearChecks" class="btn">Clear</button>
-        <button id="exportList" class="btn primary">Export .txt</button>
-        <div style="flex:1"></div>
-        <button id="openPicker" class="btn">Select Date</button>
-      </div>
-
-      <div style="margin-top:8px">
-        <div class="small" style="margin-bottom:6px"><strong>🥩 PROTEINS</strong></div>
-        <ul class="shopping-list" id="proteins">
-          <li><input type="checkbox" data-key="Chicken Breast"> Chicken Breast (Skinless): 900g</li>
-          <li><input type="checkbox" data-key="Ground Beef"> Ground Beef (90% Lean): 800g</li>
-          <li><input type="checkbox" data-key="Tuna"> Solid Tuna (in Olive Oil): 6 Cans (140g each)</li>
-          <li><input type="checkbox" data-key="Eggs"> Eggs: 2 Dozen</li>
-          <li><input type="checkbox" data-key="Whey"> Whey Isolate: 1.5kg Tub</li>
-          <li><input type="checkbox" data-key="Greek Yogurt"> Greek Yogurt: 1.5kg</li>
-        </ul>
-      </div>
-
-      <div style="margin-top:12px">
-        <div class="small" style="margin-bottom:6px"><strong>🥦 PRODUCE</strong></div>
-        <ul class="shopping-list" id="produce">
-          <li><input type="checkbox" data-key="Bananas"> Bananas: 15</li>
-          <li><input type="checkbox" data-key="Potatoes"> Potatoes: 4kg</li>
-          <li><input type="checkbox" data-key="Spinach"> Spinach: 8 Bags</li>
-          <li><input type="checkbox" data-key="Cherry Tomatoes"> Cherry Tomatoes: 4 Pints</li>
-          <li><input type="checkbox" data-key="Assorted Fruits"> Assorted Fruits: 5 Packs</li>
-        </ul>
-      </div>
-
-      <div style="margin-top:12px">
-        <div class="small" style="margin-bottom:6px"><strong>🥛 DAIRY & PANTRY</strong></div>
-        <ul class="shopping-list" id="pantry">
-          <li><input type="checkbox" data-key="Cheese"> Cheese: 250g Block</li>
-          <li><input type="checkbox" data-key="Almond Milk"> Almond Milk: 6 L</li>
-          <li><input type="checkbox" data-key="Rolled Oats"> Rolled Oats: 1kg</li>
-          <li><input type="checkbox" data-key="Pasta"> Pasta: 2 Boxes</li>
-          <li><input type="checkbox" data-key="Tomato Sauce"> Tomato Sauce: 4 Jars</li>
-          <li><input type="checkbox" data-key="Peanut Butter"> Peanut Butter: 1 Jar</li>
-          <li><input type="checkbox" data-key="Nuts"> Nuts: Almonds/Pecans/Pistachios</li>
-        </ul>
-      </div>
-
-      <div class="footer small">Tip: Add to Home Screen (Safari) to install as an app. Export creates a plain-text shopping list.</div>
-    </aside>
-  </main>
-</div>
-
-<!-- Day-picker modal -->
-<div id="dayPicker" class="modal-backdrop" aria-hidden="true">
-  <div class="picker" role="dialog" aria-modal="true" aria-labelledby="pickerTitle">
-    <h3 id="pickerTitle" style="margin:0 0 10px 0">Choose a date</h3>
-    <div class="small" style="margin-bottom:8px">Quick picks (today ±3)</div>
-    <div id="quickGrid" class="option-grid" style="margin-bottom:12px"></div>
-
-    <div style="display:flex;gap:8px;margin-bottom:12px">
-      <input id="pickerDate" type="date" style="flex:1;padding:8px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--text)">
-      <button id="pickBtn" class="btn primary">Select</button>
-    </div>
-
-    <div style="display:flex;justify-content:space-between;align-items:center">
-      <label style="color:var(--muted);font-size:0.9rem"><input id="dontAsk" type="checkbox"> Don't ask again</label>
-      <div>
-        <button id="closePicker" class="btn">Cancel</button>
-        <button id="todayBtn" class="btn">Use Today</button>
-      </div>
-    </div>
+  </div>
+  <div class="pill">
+    🟡 Yellow Recovery (63%) | Rest Day (Thursday)
   </div>
 </div>
 
+<div class="quick-nav">
+  <a href="#shopping-list">🛒 Shopping</a>
+  <a href="#mon-tue">Mon–Tue</a>
+  <a href="#wednesday">Wed</a>
+  <a href="#thursday">Thu</a>
+  <a href="#friday">Fri</a>
+  <a href="#saturday">Sat</a>
+  <a href="#sunday">Sun</a>
+</div>
+
+<!-- SHOPPING LIST -->
+<div class="card" id="shopping-list">
+  <div class="section-title">🛒 Weekly Shopping List</div>
+  <div class="small">Tap to check. Saved locally in your browser.</div>
+
+  <ul class="shopping-list">
+    <li><input type="checkbox" data-key="chicken">Chicken Breast (Skinless): 900g</li>
+    <li><input type="checkbox" data-key="beef">Ground Beef (90% Lean): 900g</li>
+    <li><input type="checkbox" data-key="tuna">Solid Tuna (Olive Oil): 6 Cans</li>
+    <li><input type="checkbox" data-key="eggs">Eggs: 2 Dozen</li>
+    <li><input type="checkbox" data-key="whey">Whey Isolate: 1.5kg</li>
+    <li><input type="checkbox" data-key="yogurt">Greek Yogurt: 1.5kg</li>
+    <li><input type="checkbox" data-key="bananas">Bananas: 15</li>
+    <li><input type="checkbox" data-key="potatoes">Potatoes: 4kg</li>
+    <li><input type="checkbox" data-key="spinach">Spinach: 8 Bags</li>
+    <li><input type="checkbox" data-key="tomatoes">Cherry Tomatoes: 4 Pints</li>
+    <li><input type="checkbox" data-key="milk">Almond Milk: 6L</li>
+    <li><input type="checkbox" data-key="oats">Rolled Oats</li>
+    <li><input type="checkbox" data-key="pasta">Pasta</li>
+    <li><input type="checkbox" data-key="pb">Peanut Butter</li>
+    <li><input type="checkbox" data-key="nuts">Mixed Nuts</li>
+  </ul>
+</div>
+
+<!-- DAYS -->
+<div class="card day" id="mon-tue">
+  <div class="day-header" onclick="toggle(this)">
+    <strong>📅 MONDAY & TUESDAY (Training)</strong>
+    <span>Animal protein focus</span>
+  </div>
+  <div class="day-content">
+    <table class="table">
+      <tr><th>08:30</th><td>Master’s Recovery Frittata</td><td>35g P / 35g C / 28g F</td></tr>
+      <tr><th>12:30</th><td>Pre-Tr Power Bowl</td><td>55g P / 55g C / 10g F</td></tr>
+      <tr><th>17:00</th><td>Post-Tr Shake</td><td>42g P / 35g C / 6g F</td></tr>
+      <tr><th>19:30</th><td>Beef & Pasta</td><td>45g P / 75g C / 28g F</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="card day" id="thursday">
+  <div class="day-header" onclick="toggle(this)">
+    <strong>📅 THURSDAY (Rest Day)</strong>
+    <span>Toning focus</span>
+  </div>
+  <div class="day-content">
+    <table class="table">
+      <tr><th>09:00</th><td>Toning Frittata</td></tr>
+      <tr><th>13:00</th><td>Chicken & Spinach</td></tr>
+      <tr><th>21:30</th><td>Whey Pudding</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="footer">
+⚡ WHOOP AUTO-REGULATION ENGINE<br>
+🟢 Add carbs if Green | 🔴 Reduce volume & increase fats if Red
+</div>
+
+</div>
+
 <script>
-/* ---------- Helpers ---------- */
-function $(sel, root=document){ return root.querySelector(sel); }
-function $all(sel, root=document){ return Array.from((root||document).querySelectorAll(sel)); }
-function formatDate(d){ const days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat']; const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']; return `${days[d.getDay()]} ${months[d.getMonth()]} ${d.getDate()}`; }
-function toISO(d){ const y=d.getFullYear(); const m=('0'+(d.getMonth()+1)).slice(-2); const day=('0'+d.getDate()).slice(-2); return `${y}-${m}-${day}`; }
-function fromISO(s){ const [y,m,d]=s.split('-').map(Number); return new Date(y,m-1,d); }
-
-/* ---------- Expand/collapse day sections ---------- */
-function toggleDay(btn){
-  const article = btn.closest('.day');
-  const exp = btn.getAttribute('aria-expanded') === 'true';
-  // collapse others
-  $all('.expand').forEach(el=>el.style.display='none');
-  $all('.day-header').forEach(h=>h.setAttribute('aria-expanded','false'));
-  if(!exp){
-    article.querySelector('.expand').style.display='block';
-    btn.setAttribute('aria-expanded','true');
-    article.scrollIntoView({behavior:'smooth', block:'center'});
-  } else {
-    article.querySelector('.expand').style.display='none';
-    btn.setAttribute('aria-expanded','false');
-  }
+function toggle(el){
+  const content = el.nextElementSibling;
+  content.style.display = content.style.display === "block" ? "none" : "block";
 }
-// keyboard support
-$all('.day-header').forEach(h=>{
-  h.addEventListener('keydown', e=>{
-    if(e.key==='Enter' || e.key===' ') { e.preventDefault(); toggleDay(h); }
+
+const boxes = document.querySelectorAll(".shopping-list input");
+boxes.forEach(cb=>{
+  const key = "shop_" + cb.dataset.key;
+  cb.checked = localStorage.getItem(key) === "true";
+  cb.addEventListener("change",()=>{
+    localStorage.setItem(key, cb.checked);
   });
 });
-
-/* ---------- Shopping persistence & export ---------- */
-const SHOP_KEY = 'v5_olympic_hub_shopping';
-function loadChecks(){
-  try{
-    const raw = localStorage.getItem(SHOP_KEY);
-    if(!raw) return;
-    const obj = JSON.parse(raw);
-    $all('.shopping-list input[type="checkbox"]').forEach(cb=>{
-      const k = cb.dataset.key || cb.id;
-      cb.checked = !!obj[k];
-    });
-  }catch(e){ console.warn(e); }
-}
-function saveChecks(){
-  try{
-    const obj={};
-    $all('.shopping-list input[type="checkbox"]').forEach(cb=>{
-      const k = cb.dataset.key || cb.id;
-      obj[k] = !!cb.checked;
-    });
-    localStorage.setItem(SHOP_KEY, JSON.stringify(obj));
-  }catch(e){ console.warn(e); }
-}
-$all('.shopping-list input[type="checkbox"]').forEach(cb=>cb.addEventListener('change', saveChecks));
-$('#clearChecks').addEventListener('click', ()=> {
-  $all('.shopping-list input[type="checkbox"]').forEach(cb=>cb.checked=false);
-  saveChecks();
-});
-$('#exportList').addEventListener('click', ()=> {
-  const lines=[];
-  $all('.shopping-list').forEach(list=>{
-    list.querySelectorAll('li').forEach(li=>{
-      const cb = li.querySelector('input[type="checkbox"]');
-      const txt = li.textContent.trim();
-      const status = cb && cb.checked ? '[x]' : '[ ]';
-      lines.push(`${status} ${txt}`);
-    });
-  });
-  const blob = new Blob([lines.join('\\n')], {type:'text/plain'});
-  const url = URL.createObjectURL(blob);
-  const a=document.createElement('a'); a.href=url; a.download=`shopping-${(new Date()).toISOString().slice(0,10)}.txt`; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
-});
-
-/* ---------- Day-picker modal ---------- */
-const DAY_KEY = 'v5_olympic_selected_date';
-const SKIP_KEY = 'v5_olympic_skip_picker';
-const pickerBackdrop = $('#dayPicker');
-const quickGrid = $('#quickGrid');
-const pickerDate = $('#pickerDate');
-const pickBtn = $('#pickBtn');
-const closePicker = $('#closePicker');
-const todayBtn = $('#todayBtn');
-const dontAsk = $('#dontAsk');
-const changeDayBtn = $('#changeDayBtn');
-
-function buildQuick(){
-  quickGrid.innerHTML='';
-  const today = new Date();
-  for(let i=-3;i<=3;i++){
-    const d = new Date(today); d.setDate(today.getDate()+i);
-    const btn = document.createElement('button');
-    btn.type='button';
-    btn.className='option-btn';
-    btn.textContent = i===0 ? `Today • ${formatDate(d)}` : (i===1?`Tomorrow • ${formatDate(d)}`:(i===-1?`Yesterday • ${formatDate(d)}`:formatDate(d)));
-    btn.dataset.iso = toISO(d);
-    btn.addEventListener('click', ()=> selectDate(btn.dataset.iso));
-    quickGrid.appendChild(btn);
-  }
-}
-
-function showPicker(force=false){
-  const skip = localStorage.getItem(SKIP_KEY) === 'true';
-  if(skip && !force){
-    const stored = localStorage.getItem(DAY_KEY);
-    if(stored) applySelectedDate(fromISO(stored));
-    return;
-  }
-  buildQuick();
-  pickerDate.value = toISO(new Date());
-  dontAsk.checked = false;
-  pickerBackdrop.style.display='flex';
-  pickerBackdrop.setAttribute('aria-hidden','false');
-  quickGrid.querySelector('button')?.focus();
-}
-function hidePicker(){ pickerBackdrop.style.display='none'; pickerBackdrop.setAttribute('aria-hidden','true'); }
-
-function applySelectedDate(d){
-  if(!(d instanceof Date) || isNaN(d)) return;
-  // update status pill
-  $('#statusPill').textContent = `🟡 Yellow Recovery (63%) • Selected: ${formatDate(d)}`;
-  // persist
-  localStorage.setItem(DAY_KEY, toISO(d));
-  if(dontAsk.checked) localStorage.setItem(SKIP_KEY,'true');
-  // expand day for this date
-  expandForDate(d);
-  hidePicker();
-}
-function selectDate(iso){ applySelectedDate(fromISO(iso)); }
-
-pickBtn.addEventListener('click', ()=>{ if(pickerDate.value) selectDate(pickerDate.value); });
-todayBtn.addEventListener('click', ()=> selectDate(toISO(new Date())));
-closePicker.addEventListener('click', ()=> { hidePicker(); const stored = localStorage.getItem(DAY_KEY); if(stored) applySelectedDate(fromISO(stored)); });
-pickerBackdrop.addEventListener('click', (e)=>{ if(e.target === pickerBackdrop) closePicker.click(); });
-changeDayBtn.addEventListener('click', ()=> showPicker(true));
-
-function weekdayToAttr(d){
-  const wd = d.getDay();
-  switch(wd){
-    case 1: return 'MonTue';
-    case 2: return 'MonTue';
-    case 3: return 'Wed';
-    case 4: return 'Thu';
-    case 5: return 'Fri';
-    case 6: return 'Sat';
-    case 0: return 'Sun';
-    default: return 'MonTue';
-  }
-}
-
-function expandForDate(d){
-  const attr = weekdayToAttr(d);
-  // collapse all
-  $all('.expand').forEach(el=>el.style.display='none');
-  $all('.day-header').forEach(h=>h.setAttribute('aria-expanded','false'));
-  const article = document.querySelector(`.day[data-day="${attr}"]`);
-  if(article){
-    article.querySelector('.expand').style.display='block';
-    article.querySelector('.day-header').setAttribute('aria-expanded','true');
-    setTimeout(()=> article.scrollIntoView({behavior:'smooth', block:'center'}), 120);
-  }
-}
-
-/* ---------- init ---------- */
-(function init(){
-  // keyboard accessibility
-  $all('.day-header').forEach(h=>{ h.setAttribute('tabindex','0'); h.setAttribute('role','button'); });
-  loadChecks();
-
-  const skip = localStorage.getItem(SKIP_KEY) === 'true';
-  const stored = localStorage.getItem(DAY_KEY);
-  if(stored && skip){ applySelectedDate(fromISO(stored)); }
-  else if(stored && !skip){
-    $('#statusPill').textContent = `🟡 Yellow Recovery (63%) • Selected: ${formatDate(fromISO(stored))}`;
-    showPicker(false);
-  } else {
-    showPicker(false);
-  }
-})();
-
-/* ---------- Optional Service Worker registration ---------- */
-if('serviceWorker' in navigator){
-  window.addEventListener('load', async ()=> {
-    try{
-      await navigator.serviceWorker.register('/sw.js');
-      console.log('Service worker registered');
-    } catch(e){ console.warn('SW registration failed', e); }
-  });
-}
 </script>
+
 </body>
 </html>
