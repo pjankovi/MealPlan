@@ -1,307 +1,323 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Performance Dashboard</title>
-
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#121212">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
-
-<style>
-:root {
-  --bg-dark: #121212;
-  --card-bg: #1e1e1e;
-  --text-main: #ffffff;
-  --text-dim: #b3b3b3;
-  --accent: #3498db;
-  --whoop-yellow: #f1c40f;
-}
-
-* { box-sizing: border-box; }
-html,body { margin:0; height:100%; }
-
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial;
-  background: var(--bg-dark);
-  color: var(--text-main);
-  display:flex;
-  flex-direction:column;
-  min-height:100vh;
-}
-
-header {
-  background: var(--card-bg);
-  padding:16px;
-  text-align:center;
-  position:relative;
-  border-bottom:1px solid #333;
-}
-
-.change-day-btn {
-  position:absolute;
-  right:12px;
-  top:12px;
-  background:transparent;
-  border:1px solid #333;
-  color:var(--text-dim);
-  padding:6px 10px;
-  border-radius:8px;
-  cursor:pointer;
-}
-
-.status-bar {
-  display:inline-block;
-  margin-top:8px;
-  padding:6px 12px;
-  border-radius:20px;
-  font-weight:600;
-  background:rgba(241,196,15,0.12);
-  color:var(--whoop-yellow);
-  border:1px solid rgba(241,196,15,0.3);
-}
-
-main {
-  flex:1;
-  padding:18px;
-  padding-bottom:110px;
-  max-width:900px;
-  margin:0 auto;
-  width:100%;
-}
-
-.view { display:none; }
-.view.active { display:block; }
-
-.card {
-  background:var(--card-bg);
-  border:1px solid #333;
-  padding:14px;
-  border-radius:12px;
-  margin-bottom:12px;
-  cursor:pointer;
-}
-
-.meal-time { color:var(--text-dim); font-size:0.8rem; }
-.meal-name { font-weight:700; margin:6px 0; }
-.macro-row { display:flex; justify-content:space-between; font-size:0.9rem; border-top:1px solid #333; padding-top:8px; }
-.recipe-detail { display:none; margin-top:10px; color:var(--text-dim); }
-.recipe-detail.show { display:block; }
-
-.nav {
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  background:var(--card-bg);
-  border-top:1px solid #333;
-  display:flex;
-  justify-content:space-around;
-  padding:10px 0;
-}
-
-.nav-item {
-  color:var(--text-dim);
-  text-align:center;
-  cursor:pointer;
-}
-
-.nav-item.active {
-  color:var(--accent);
-}
-
-.modal {
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.6);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  z-index:200;
-}
-
-.modal-box {
-  background:var(--card-bg);
-  padding:20px;
-  border-radius:12px;
-  border:1px solid #333;
-  width:90%;
-  max-width:420px;
-}
-
-.option-btn {
-  background:transparent;
-  border:1px solid #333;
-  padding:8px;
-  border-radius:8px;
-  color:var(--text-main);
-  cursor:pointer;
-  margin:4px 0;
-  width:100%;
-}
-
-.shopping-list input {
-  margin-right:8px;
-}
-</style>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2575.7">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
 </head>
 <body>
-
-<header>
-  <h2>PERFORMANCE DASHBOARD</h2>
-  <button class="change-day-btn" onclick="showDayPicker(true)">Change Day</button>
-  <div class="status-bar">🟡 63% YELLOW RECOVERY</div>
-</header>
-
-<main>
-
-<div id="daily" class="view active">
-  <h3 id="dailyHeading"></h3>
-
-  <div class="card" onclick="toggleRecipe(this)">
-    <div class="meal-time">09:00 AM</div>
-    <div class="meal-name">Recovery Frittata</div>
-    <div class="macro-row">
-      <span>P: 26g</span><span>C: 20g</span><span>F: 20g</span>
-    </div>
-    <div class="recipe-detail">
-      Eggs, spinach, tomato, banana.
-    </div>
-  </div>
-
-  <div class="card" onclick="toggleRecipe(this)">
-    <div class="meal-time">01:00 PM</div>
-    <div class="meal-name">Chicken & Potato</div>
-    <div class="macro-row">
-      <span>P: 65g</span><span>C: 40g</span><span>F: 6g</span>
-    </div>
-    <div class="recipe-detail">
-      Chicken breast, potato, spinach.
-    </div>
-  </div>
-
-</div>
-
-<div id="shopping" class="view">
-  <h3>Weekly Groceries</h3>
-  <div class="shopping-list">
-    <label><input type="checkbox" data-key="chicken">700g Chicken</label><br>
-    <label><input type="checkbox" data-key="beef">700g Beef</label><br>
-    <label><input type="checkbox" data-key="eggs">2 Dozen Eggs</label>
-  </div>
-</div>
-
-</main>
-
-<nav class="nav">
-  <div class="nav-item active" data-view="daily">📅<br>Daily</div>
-  <div class="nav-item" data-view="shopping">🛒<br>Shopping</div>
-</nav>
-
-<div id="dayPicker" class="modal" style="display:none;">
-  <div class="modal-box">
-    <h3>Select Day</h3>
-    <button class="option-btn" onclick="pickDate(0)">Today</button>
-    <button class="option-btn" onclick="pickDate(1)">Tomorrow</button>
-    <button class="option-btn" onclick="pickDate(-1)">Yesterday</button>
-    <input type="date" id="customDate" style="margin-top:8px;width:100%;padding:6px;">
-    <button class="option-btn" onclick="pickCustom()">Select Custom Date</button>
-  </div>
-</div>
-
-<script>
-
-/* Date Handling */
-
-function formatDate(d){
-  return d.toDateString();
-}
-
-function pickDate(offset){
-  const d = new Date();
-  d.setDate(d.getDate() + offset);
-  setDate(d);
-}
-
-function pickCustom(){
-  const val = document.getElementById("customDate").value;
-  if(val){
-    setDate(new Date(val));
-  }
-}
-
-function setDate(d){
-  document.getElementById("dailyHeading").innerText = formatDate(d);
-  localStorage.setItem("selectedDate", d.toISOString());
-  hideDayPicker();
-  showView("daily");
-}
-
-function showDayPicker(force){
-  document.getElementById("dayPicker").style.display = "flex";
-}
-
-function hideDayPicker(){
-  document.getElementById("dayPicker").style.display = "none";
-}
-
-/* Nav */
-
-function showView(id){
-  document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-
-  document.querySelectorAll(".nav-item").forEach(n=>n.classList.remove("active"));
-  document.querySelector(`.nav-item[data-view="${id}"]`).classList.add("active");
-}
-
-document.querySelectorAll(".nav-item").forEach(item=>{
-  item.addEventListener("click", ()=>{
-    const view = item.dataset.view;
-    if(view === "daily"){
-      showDayPicker(true);
-    } else {
-      showView(view);
-    }
-  });
-});
-
-/* Recipe toggle */
-
-function toggleRecipe(card){
-  const detail = card.querySelector(".recipe-detail");
-  detail.classList.toggle("show");
-}
-
-/* Shopping persistence */
-
-document.querySelectorAll(".shopping-list input").forEach(cb=>{
-  const key = cb.dataset.key;
-  cb.checked = localStorage.getItem("shop_"+key) === "true";
-  cb.addEventListener("change", ()=>{
-    localStorage.setItem("shop_"+key, cb.checked);
-  });
-});
-
-/* Initialize */
-
-window.onload = function(){
-  const stored = localStorage.getItem("selectedDate");
-  if(stored){
-    setDate(new Date(stored));
-  } else {
-    showDayPicker(true);
-  }
-};
-
-/* Service Worker */
-
-if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('sw.js').catch(console.warn);
-}
-
-</script>
-
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="en"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1">&lt;meta charset="utf-8" /&gt;</p>
+<p class="p1">&lt;meta name="viewport" content="width=device-width, initial-scale=1" /&gt;</p>
+<p class="p1">&lt;title&gt;Performance Dashboard&lt;/title&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;link rel="manifest" href="manifest.json"&gt;</p>
+<p class="p1">&lt;meta name="theme-color" content="#121212"&gt;</p>
+<p class="p1">&lt;link rel="apple-touch-icon" href="apple-touch-icon.png"&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;style&gt;</p>
+<p class="p1">:root {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>--bg-dark: #121212;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>--card-bg: #1e1e1e;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>--text-main: #ffffff;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>--text-dim: #b3b3b3;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>--accent: #3498db;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>--whoop-yellow: #f1c40f;</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">* { box-sizing: border-box; }</p>
+<p class="p1">html,body { margin:0; height:100%; }</p>
+<p class="p2"><br></p>
+<p class="p1">body {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background: var(--bg-dark);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color: var(--text-main);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>display:flex;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>flex-direction:column;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>min-height:100vh;</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">header {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background: var(--card-bg);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>padding:16px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>text-align:center;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>position:relative;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-bottom:1px solid #333;</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">.change-day-btn {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>position:absolute;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>right:12px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>top:12px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background:transparent;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border:1px solid #333;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color:var(--text-dim);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>padding:6px 10px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-radius:8px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>cursor:pointer;</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">.status-bar {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>display:inline-block;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>margin-top:8px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>padding:6px 12px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-radius:20px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-weight:600;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background:rgba(241,196,15,0.12);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color:var(--whoop-yellow);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border:1px solid rgba(241,196,15,0.3);</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">main {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>flex:1;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>padding:18px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>padding-bottom:110px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>max-width:900px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>margin:0 auto;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>width:100%;</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">.view { display:none; }</p>
+<p class="p1">.view.active { display:block; }</p>
+<p class="p2"><br></p>
+<p class="p1">.card {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background:var(--card-bg);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border:1px solid #333;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>padding:14px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-radius:12px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>margin-bottom:12px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>cursor:pointer;</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">.meal-time { color:var(--text-dim); font-size:0.8rem; }</p>
+<p class="p1">.meal-name { font-weight:700; margin:6px 0; }</p>
+<p class="p1">.macro-row { display:flex; justify-content:space-between; font-size:0.9rem; border-top:1px solid #333; padding-top:8px; }</p>
+<p class="p1">.recipe-detail { display:none; margin-top:10px; color:var(--text-dim); }</p>
+<p class="p1">.recipe-detail.show { display:block; }</p>
+<p class="p2"><br></p>
+<p class="p1">.nav {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>position:fixed;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>bottom:0;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>left:0;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>right:0;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background:var(--card-bg);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-top:1px solid #333;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>display:flex;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>justify-content:space-around;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>padding:10px 0;</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">.nav-item {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color:var(--text-dim);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>text-align:center;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>cursor:pointer;</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">.nav-item.active {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color:var(--accent);</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">.modal {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>position:fixed;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>inset:0;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background:rgba(0,0,0,0.6);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>display:flex;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>align-items:center;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>justify-content:center;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>z-index:200;</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">.modal-box {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background:var(--card-bg);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>padding:20px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-radius:12px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border:1px solid #333;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>width:90%;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>max-width:420px;</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">.option-btn {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background:transparent;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border:1px solid #333;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>padding:8px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-radius:8px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color:var(--text-main);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>cursor:pointer;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>margin:4px 0;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>width:100%;</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">.shopping-list input {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>margin-right:8px;</p>
+<p class="p1">}</p>
+<p class="p1">&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;header&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;h2&gt;PERFORMANCE DASHBOARD&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;button class="change-day-btn" onclick="showDayPicker(true)"&gt;Change Day&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="status-bar"&gt;🟡 63% YELLOW RECOVERY&lt;/div&gt;</p>
+<p class="p1">&lt;/header&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;main&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;div id="daily" class="view active"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;h3 id="dailyHeading"&gt;&lt;/h3&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="card" onclick="toggleRecipe(this)"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="meal-time"&gt;09:00 AM&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="meal-name"&gt;Recovery Frittata&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="macro-row"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;span&gt;P: 26g&lt;/span&gt;&lt;span&gt;C: 20g&lt;/span&gt;&lt;span&gt;F: 20g&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="recipe-detail"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>Eggs, spinach, tomato, banana.</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="card" onclick="toggleRecipe(this)"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="meal-time"&gt;01:00 PM&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="meal-name"&gt;Chicken &amp; Potato&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="macro-row"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;span&gt;P: 65g&lt;/span&gt;&lt;span&gt;C: 40g&lt;/span&gt;&lt;span&gt;F: 6g&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="recipe-detail"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>Chicken breast, potato, spinach.</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;div id="shopping" class="view"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;h3&gt;Weekly Groceries&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="shopping-list"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;label&gt;&lt;input type="checkbox" data-key="chicken"&gt;700g Chicken&lt;/label&gt;&lt;br&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;label&gt;&lt;input type="checkbox" data-key="beef"&gt;700g Beef&lt;/label&gt;&lt;br&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;label&gt;&lt;input type="checkbox" data-key="eggs"&gt;2 Dozen Eggs&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1">&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;/main&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;nav class="nav"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="nav-item active" data-view="daily"&gt;📅&lt;br&gt;Daily&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="nav-item" data-view="shopping"&gt;🛒&lt;br&gt;Shopping&lt;/div&gt;</p>
+<p class="p1">&lt;/nav&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;div id="dayPicker" class="modal" style="display:none;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="modal-box"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;h3&gt;Select Day&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;button class="option-btn" onclick="pickDate(0)"&gt;Today&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;button class="option-btn" onclick="pickDate(1)"&gt;Tomorrow&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;button class="option-btn" onclick="pickDate(-1)"&gt;Yesterday&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;input type="date" id="customDate" style="margin-top:8px;width:100%;padding:6px;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;button class="option-btn" onclick="pickCustom()"&gt;Select Custom Date&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1">&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;script&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">/* Date Handling */</p>
+<p class="p2"><br></p>
+<p class="p1">function formatDate(d){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>return d.toDateString();</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function pickDate(offset){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const d = new Date();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>d.setDate(d.getDate() + offset);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>setDate(d);</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function pickCustom(){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const val = document.getElementById("customDate").value;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if(val){</p>
+<p class="p1"><span class="Apple-converted-space">    </span>setDate(new Date(val));</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function setDate(d){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById("dailyHeading").innerText = formatDate(d);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>localStorage.setItem("selectedDate", d.toISOString());</p>
+<p class="p1"><span class="Apple-converted-space">  </span>hideDayPicker();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>showView("daily");</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function showDayPicker(force){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById("dayPicker").style.display = "flex";</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function hideDayPicker(){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById("dayPicker").style.display = "none";</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">/* Nav */</p>
+<p class="p2"><br></p>
+<p class="p1">function showView(id){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.querySelectorAll(".view").forEach(v=&gt;v.classList.remove("active"));</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById(id).classList.add("active");</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.querySelectorAll(".nav-item").forEach(n=&gt;n.classList.remove("active"));</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.querySelector(`.nav-item[data-view="${id}"]`).classList.add("active");</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">document.querySelectorAll(".nav-item").forEach(item=&gt;{</p>
+<p class="p1"><span class="Apple-converted-space">  </span>item.addEventListener("click", ()=&gt;{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const view = item.dataset.view;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if(view === "daily"){</p>
+<p class="p1"><span class="Apple-converted-space">      </span>showDayPicker(true);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>showView(view);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>});</p>
+<p class="p1">});</p>
+<p class="p2"><br></p>
+<p class="p1">/* Recipe toggle */</p>
+<p class="p2"><br></p>
+<p class="p1">function toggleRecipe(card){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const detail = card.querySelector(".recipe-detail");</p>
+<p class="p1"><span class="Apple-converted-space">  </span>detail.classList.toggle("show");</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">/* Shopping persistence */</p>
+<p class="p2"><br></p>
+<p class="p1">document.querySelectorAll(".shopping-list input").forEach(cb=&gt;{</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const key = cb.dataset.key;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>cb.checked = localStorage.getItem("shop_"+key) === "true";</p>
+<p class="p1"><span class="Apple-converted-space">  </span>cb.addEventListener("change", ()=&gt;{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>localStorage.setItem("shop_"+key, cb.checked);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>});</p>
+<p class="p1">});</p>
+<p class="p2"><br></p>
+<p class="p1">/* Initialize */</p>
+<p class="p2"><br></p>
+<p class="p1">window.onload = function(){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const stored = localStorage.getItem("selectedDate");</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if(stored){</p>
+<p class="p1"><span class="Apple-converted-space">    </span>setDate(new Date(stored));</p>
+<p class="p1"><span class="Apple-converted-space">  </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>showDayPicker(true);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1">};</p>
+<p class="p2"><br></p>
+<p class="p1">/* Service Worker */</p>
+<p class="p2"><br></p>
+<p class="p1">if('serviceWorker' in navigator){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>navigator.serviceWorker.register('sw.js').catch(console.warn);</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;/script&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
 </body>
 </html>
