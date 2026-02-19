@@ -1,13 +1,12 @@
 {
-  "name": "Performance Dashboard",
-  "short_name": "PerfDash",
-  "description": "Daily performance & grocery plan \u2014 protein boluses, recipes and shopping lists.",
-  "start_url": ".",
-  "scope": ".",
+  "short_name": "PerfHub",
+  "name": "7-Day Olympic Performance Hub v5.0",
+  "start_url": "/index.html",
+  "scope": "/",
   "display": "standalone",
-  "background_color": "#121212",
-  "theme_color": "#121212",
   "orientation": "portrait",
+  "background_color": "#061219",
+  "theme_color": "#07131b",
   "icons": [
     {
       "src": "icon-192.png",
@@ -22,8 +21,7 @@
     {
       "src": "apple-touch-icon.png",
       "sizes": "180x180",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/png"
     }
   ]
 }
