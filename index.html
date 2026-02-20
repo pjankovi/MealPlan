@@ -1,89 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <title>Master Weightlifter Hub</title>
 <style>
 :root {
---whoop-green: #2ecc71;
---whoop-yellow: #f1c40f;
---whoop-red: #e74c3c;
---bg: #121212;
---card: #1c1c1e;
---accent: #0A84FF;
---text: #ffffff;
---text-dim: #8e8e93;
+  --whoop-green: #2ecc71;
+  --whoop-yellow: #f1c40f;
+  --whoop-red: #e74c3c;
+  --bg: #121212;
+  --card: #1c1c1e;
+  --accent: #0A84FF;
+  --text: #ffffff;
+  --text-dim: #8e8e93;
 }
 body {
-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-background-color: var(--bg);
-color: var(--text);
-margin: 0;
-padding: 0;
--webkit-user-select: none;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  margin: 0;
+  padding: 0;
+  -webkit-user-select: none;
 }
 .header {
-padding: 25px 20px 10px 20px;
-background: #000;
-position: sticky;
-top: 0;
-z-index: 100;
-border-bottom: 1px solid #333;
+  padding: 25px 20px 10px 20px;
+  background: #000;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 1px solid #333;
 }
 .header h1 { font-size: 1.2rem; margin: 0; letter-spacing: 1px; color: var(--whoop-yellow); }
 .header p { font-size: 0.8rem; color: var(--text-dim); margin: 5px 0 0 0; }
 .day-nav {
-display: flex;
-overflow-x: auto;
-padding: 15px 10px;
-gap: 10px;
-scrollbar-width: none;
+  display: flex;
+  overflow-x: auto;
+  padding: 15px 10px;
+  gap: 10px;
+  scrollbar-width: none;
 }
 .day-nav::-webkit-scrollbar { display: none; }
 .day-btn {
-background: var(--card);
-border: 1px solid #333;
-color: var(--text);
-padding: 10px 18px;
-border-radius: 20px;
-white-space: nowrap;
-font-size: 0.9rem;
-font-weight: 600;
-cursor: pointer;
+  background: var(--card);
+  border: 1px solid #333;
+  color: var(--text);
+  padding: 10px 18px;
+  border-radius: 20px;
+  white-space: nowrap;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
 }
 .day-btn.active {
-background: var(--accent);
-border-color: var(--accent);
+  background: var(--accent);
+  border-color: var(--accent);
 }
 .container { padding: 0 15px 100px 15px; }
 .section-title {
-font-size: 0.8rem;
-color: var(--text-dim);
-text-transform: uppercase;
-margin: 20px 0 10px 5px;
-letter-spacing: 1px;
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  margin: 20px 0 10px 5px;
+  letter-spacing: 1px;
 }
 .daily-totals {
-background: linear-gradient(145deg, #2c2c2e, #1c1c1e);
-border-radius: 15px;
-padding: 15px;
-display: grid;
-grid-template-columns: repeat(3, 1fr);
-gap: 10px;
-margin-bottom: 20px;
-border: 1px solid #333;
+  background: linear-gradient(145deg, #2c2c2e, #1c1c1e);
+  border-radius: 15px;
+  padding: 15px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #333;
 }
 .total-item { text-align: center; }
 .total-val { display: block; font-size: 1.1rem; font-weight: bold; color: var(--accent); }
 .total-label { font-size: 0.7rem; color: var(--text-dim); }
 .meal-card {
-background: var(--card);
-border-radius: 12px;
-padding: 15px;
-margin-bottom: 12px;
-border: 1px solid #333;
-transition: all 0.2s;
+  background: var(--card);
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 12px;
+  border: 1px solid #333;
+  transition: all 0.2s;
 }
 .meal-card:active { transform: scale(0.98); background: #2c2c2e; }
 .meal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
@@ -91,12 +91,12 @@ transition: all 0.2s;
 .meal-name { font-size: 1rem; font-weight: 600; }
 .meal-macros { font-size: 0.8rem; color: var(--text-dim); }
 .recipe-drawer {
-display: none;
-padding-top: 15px;
-border-top: 1px solid #333;
-margin-top: 10px;
-font-size: 0.9rem;
-line-height: 1.5;
+  display: none;
+  padding-top: 15px;
+  border-top: 1px solid #333;
+  margin-top: 10px;
+  font-size: 0.9rem;
+  line-height: 1.5;
 }
 .recipe-drawer.open { display: block; }
 .ingredients { margin-bottom: 10px; color: var(--text); }
@@ -104,172 +104,270 @@ line-height: 1.5;
 .shopping-list { display: none; }
 .shopping-list.active { display: block; }
 .shop-item {
-display: flex;
-align-items: center;
-padding: 12px;
-border-bottom: 1px solid #333;
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  border-bottom: 1px solid #333;
 }
 .shop-item input { margin-right: 15px; width: 18px; height: 18px; }
 .bottom-nav {
-position: fixed;
-bottom: 0;
-width: 100%;
-background: #000;
-display: flex;
-justify-content: space-around;
-padding: 15px 0 30px 0;
-border-top: 1px solid #333;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #000;
+  display: flex;
+  justify-content: space-around;
+  padding: 15px 0 30px 0;
+  border-top: 1px solid #333;
 }
-.nav-item { text-align: center; color: var(--text-dim); font-size: 0.7rem; text-decoration: none; }
+.nav-item { text-align: center; color: var(--text-dim); font-size: 0.7rem; text-decoration: none; cursor:pointer; }
 .nav-item.active { color: var(--accent); }
 .nav-icon { display: block; font-size: 1.4rem; margin-bottom: 4px; }
 </style>
 </head>
 <body>
 <div class="header">
-<h1>OLY PERFORMANCE HUB</h1>
-<p id="sub-status">🟢 Loading Athlete Profile...</p>
+  <h1>OLY PERFORMANCE HUB</h1>
+  <p id="sub-status">🟢 Loading Athlete Profile...</p>
 </div>
+
 <div id="main-view">
-<div class="day-nav" id="dayNav">
-<button class="day-btn active" onclick="setDay('Mon')">Mon</button>
-<button class="day-btn" onclick="setDay('Tue')">Tue</button>
-<button class="day-btn" onclick="setDay('Wed')">Wed</button>
-<button class="day-btn" onclick="setDay('Thu')">Thu</button>
-<button class="day-btn" onclick="setDay('Fri')">Fri</button>
-<button class="day-btn" onclick="setDay('Sat')">Sat</button>
-<button class="day-btn" onclick="setDay('Sun')">Sun</button>
+  <div class="day-nav" id="dayNav">
+    <button class="day-btn" onclick="setDay('Mon', this)">Mon</button>
+    <button class="day-btn" onclick="setDay('Tue', this)">Tue</button>
+    <button class="day-btn" onclick="setDay('Wed', this)">Wed</button>
+    <button class="day-btn" onclick="setDay('Thu', this)">Thu</button>
+    <button class="day-btn" onclick="setDay('Fri', this)">Fri</button>
+    <button class="day-btn" onclick="setDay('Sat', this)">Sat</button>
+    <button class="day-btn" onclick="setDay('Sun', this)">Sun</button>
+  </div>
+
+  <div class="container">
+    <div class="section-title">Daily Energy Targets</div>
+    <div class="daily-totals" id="totalsDisplay"></div>
+
+    <div class="section-title">Meal Schedule</div>
+    <div id="mealContainer"></div>
+  </div>
 </div>
-<div class="container">
-<div class="section-title">Daily Energy Targets</div>
-<div class="daily-totals" id="totalsDisplay">
-</div>
-<div class="section-title">Meal Schedule</div>
-<div id="mealContainer">
-</div>
-</div>
-</div>
+
 <div id="shopping-view" class="shopping-list">
-<div class="container">
-<div class="section-title">Weekly Grocery Inventory</div>
-<div style="background:var(--card); border-radius:15px; padding:10px;">
-<div class="shop-item"><input type="checkbox"> 900g Chicken Breast</div>
-<div class="shop-item"><input type="checkbox"> 900g Ground Beef (90%)</div>
-<div class="shop-item"><input type="checkbox"> 6 Cans Solid Tuna (Olive Oil)</div>
-<div class="shop-item"><input type="checkbox"> 2 Dozen Large Eggs</div>
-<div class="shop-item"><input type="checkbox"> 1.5kg Whey Isolate Powder</div>
-<div class="shop-item"><input type="checkbox"> 1.5kg Plain Greek Yogurt</div>
-<div class="shop-item"><input type="checkbox"> 4kg Russet/Red Potatoes</div>
-<div class="shop-item"><input type="checkbox"> 8 Bags Fresh Spinach</div>
-<div class="shop-item"><input type="checkbox"> 4 Pints Cherry Tomatoes</div>
-<div class="shop-item"><input type="checkbox"> 15 Large Bananas</div>
-<div class="shop-item"><input type="checkbox"> 2 Boxes Whole Wheat Pasta</div>
-<div class="shop-item"><input type="checkbox"> 6 Liters Almond Milk (Unsw)</div>
-<div class="shop-item"><input type="checkbox"> 1kg Rolled Oats</div>
-<div class="shop-item"><input type="checkbox"> 250g Block Hard Cheese</div>
-<div class="shop-item"><input type="checkbox"> Mixed Nuts (Almonds/Pecans)</div>
+  <div class="container">
+    <div class="section-title">Weekly Grocery Inventory</div>
+    <div style="background:var(--card); border-radius:15px; padding:10px;">
+      <div class="shop-item"><input type="checkbox" data-shop="chicken"> 900g Chicken Breast</div>
+      <div class="shop-item"><input type="checkbox" data-shop="beef"> 900g Ground Beef (90%)</div>
+      <div class="shop-item"><input type="checkbox" data-shop="tuna"> 6 Cans Solid Tuna (Olive Oil)</div>
+      <div class="shop-item"><input type="checkbox" data-shop="eggs"> 2 Dozen Large Eggs</div>
+      <div class="shop-item"><input type="checkbox" data-shop="whey"> 1.5kg Whey Isolate Powder</div>
+      <div class="shop-item"><input type="checkbox" data-shop="yogurt"> 1.5kg Plain Greek Yogurt</div>
+      <div class="shop-item"><input type="checkbox" data-shop="potatoes"> 4kg Russet/Red Potatoes</div>
+      <div class="shop-item"><input type="checkbox" data-shop="spinach"> 8 Bags Fresh Spinach</div>
+      <div class="shop-item"><input type="checkbox" data-shop="tomatoes"> 4 Pints Cherry Tomatoes</div>
+      <div class="shop-item"><input type="checkbox" data-shop="bananas"> 15 Large Bananas</div>
+      <div class="shop-item"><input type="checkbox" data-shop="pasta"> 2 Boxes Whole Wheat Pasta</div>
+      <div class="shop-item"><input type="checkbox" data-shop="milk"> 6 Liters Almond Milk (Unsw)</div>
+      <div class="shop-item"><input type="checkbox" data-shop="oats"> 1kg Rolled Oats</div>
+      <div class="shop-item"><input type="checkbox" data-shop="cheese"> 250g Block Hard Cheese</div>
+      <div class="shop-item"><input type="checkbox" data-shop="nuts"> Mixed Nuts (Almonds/Pecans)</div>
+    </div>
+  </div>
 </div>
-</div>
-</div>
+
 <div class="bottom-nav">
-<a href="#" class="nav-item active" id="planNav" onclick="toggleView('plan')">
-<span class="nav-icon">📅</span>PLAN
-</a>
-<a href="#" class="nav-item" id="shopNav" onclick="toggleView('shop')">
-<span class="nav-icon">🛒</span>GROCERIES
-</a>
+  <div class="nav-item active" id="planNav" onclick="toggleView('plan')">
+    <span class="nav-icon">📅</span>PLAN
+  </div>
+  <div class="nav-item" id="shopNav" onclick="toggleView('shop')">
+    <span class="nav-icon">🛒</span>GROCERIES
+  </div>
 </div>
+
 <script>
+/* ---- Data: daily plans ---- */
 const plans = {
-'Mon': {
-status: "🟡 Training @ 3PM",
-totals: { p: "202g", c: "215g", f: "88g" },
-meals:" },
-{ time: "12:30", name: "Pre-Tr Chicken & Savory Oats", p: "55g", c: "55g", f: "10g",
-ing: "170g Chicken Breast, 80g dry Rolled Oats, 50g Tomatoes.",
-inst: "Cook oats savory in broth/water. Top with grilled chicken. " },
-{ time: "17:00", name: "Post-Tr Rebuild Smoothie", p: "42g", c: "35g", f: "6g",
-ing: "45g Whey (1.5 scoops), 300ml Almond Milk, 1 Large Banana.",
-inst: "Blend for rapid delivery. No water only. " },
-{ time: "19:30", name: "Strength Beef & Pasta Skillet", p: "45g", c: "75g", f: "28g",
-ing: "170g Ground Beef, 100g dry Pasta, 150g Tomato Sauce, 50g Spinach.",
-inst: "Brown beef, add sauce/spinach, toss with boiled pasta. " },
-{ time: "22:00", name: "Nightly Casein Bolus", p: "25g", c: "15g", f: "16g",
-ing: "250g Greek Yogurt, 20g Pecans.",
-inst: "Mix and eat. Casein supports overnight repair. " }
-]
-},
-'Wed': {
-status: "🟢 Restricted Training @ 3PM",
-totals: { p: "195g", c: "245g", f: "72g" },
-meals:" },
-{ time: "12:30", name: "Tuna & Potato Roast", p: "40g", c: "65g", f: "15g",
-ing: "1 Can Solid Tuna (140g), 300g Potatoes, 100g Spinach.",
-inst: "Roast cubed potatoes. Toss with tuna (use some of the olive oil) and spinach. " },
-{ time: "17:00", name: "Recovery Fruit Smoothie", p: "42g", c: "35g", f: "6g",
-ing: "45g Whey, 300ml Almond Milk, 1 Banana.",
-inst: "Blend until smooth." },
-{ time: "19:30", name: "Savory Tuna Marinara", p: "55g", c: "80g", f: "18g",
-ing: "1 Can Tuna, 100g dry Pasta, 150g Sauce, 30g Whey.",
-inst: "Whisk whey with cold water into a paste. Heat sauce on LOW, stir in paste and tuna. Toss pasta. " },
-{ time: "22:00", name: "Night Repair", p: "10g", c: "5g", f: "15g",
-ing: "300ml Almond Milk, 30g Pistachios.",
-inst: "Relax and sip. Magnesium in nuts supports CNS. " }
-]
-},
-'Thu': {
-status: "🟡 Rest & Tone (Recomp)",
-totals: { p: "204g", c: "70g", f: "80g" },
-meals:" },
-{ time: "13:00", name: "Lean Chicken & Spinach Roast", p: "65g", c: "30g", f: "8g",
-ing: "200g Chicken Breast, 150g Potato, 200g Spinach.",
-inst: "Roast chicken/potato; serve over fresh spinach bed. " },
-{ time: "16:30", name: "Greek Yogurt Bolus", p: "30g", c: "20g", f: "2g",
-ing: "300g Greek Yogurt, 100g Berries.",
-inst: "Simple bolus to maintain amino pool." },
-{ time: "19:30", name: "No-Starch Beef Skillet", p: "42g", c: "5g", f: "34g",
-ing: "170g Ground Beef, 150g Spinach, 30g Cheese.",
-inst: "Skip the starch tonight to facilitate toning. " },
-{ time: "21:30", name: "Toning Whey Pudding", p: "35g", c: "10g", f: "4g",
-ing: "45g Whey, 150ml Almond Milk.",
-inst: "Whisk into thick pudding style consistency. " }
-]
-}
-};  
-// Copy Mon to Tue and Sat, Wed to Fri, Thu to Sun for demo purposes
-plans = JSON.parse(JSON.stringify(plans['Mon']));
-plans = JSON.parse(JSON.stringify(plans['Mon'])); plans.status = "🟡 Training @ 9AM";
-plans['Fri'] = JSON.parse(JSON.stringify(plans)); plans['Fri'].status = "🟢 Saturday Load Day";
-plans = JSON.parse(JSON.stringify(plans)); plans.status = "🔵 Rest & Reset";
-function setDay(day) {
-document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active'));
-event.target.classList.add('active');
-renderDay(day);
-}
-function renderDay(day) {
-const data = plans[day];
-document.getElementById('sub-status').innerText = data.status;
-document.getElementById('totalsDisplay').innerHTML = <div class="total-item"><span class="total-val">${data.totals.p}</span><span class="total-label">Protein</span></div> <div class="total-item"><span class="total-val">${data.totals.c}</span><span class="total-label">Carbs</span></div> <div class="total-item"><span class="total-val">${data.totals.f}</span><span class="total-label">Fats</span></div>;
-const container = document.getElementById('mealContainer');
-container.innerHTML = '';
-data.meals.forEach((m, i) => {
-const card = document.createElement('div');
-card.className = 'meal-card';
-card.onclick = () => {
-const drawer = card.querySelector('.recipe-drawer');
-drawer.classList.toggle('open');
+  Mon: {
+    status: "🟡 Training @ 3PM",
+    totals: { p: "202g", c: "215g", f: "88g" },
+    meals: [
+      { time: "08:30", name: "Master’s Recovery Frittata", p: "35g", c: "35g", f: "28g",
+        ing: "4 Eggs, 30g Cheese, 150g Potato (cubed), 100g Spinach, 50g Cherry Tomatoes.",
+        inst: "Sauté potatoes and tomatoes; whisk eggs and pour over; cook on low until set." },
+      { time: "12:30", name: "Pre-Tr Chicken & Savory Oats", p: "55g", c: "55g", f: "10g",
+        ing: "170g Chicken Breast, 80g dry Rolled Oats, 50g Tomatoes.",
+        inst: "Cook oats savory in broth/water. Top with grilled chicken and tomatoes." },
+      { time: "17:00", name: "Post-Tr Rebuild Smoothie", p: "42g", c: "35g", f: "6g",
+        ing: "45g Whey (1.5 scoops), 300ml Almond Milk, 1 Large Banana.",
+        inst: "Blend for rapid delivery." },
+      { time: "19:30", name: "Strength Beef & Pasta Skillet", p: "45g", c: "75g", f: "28g",
+        ing: "170g Ground Beef, 100g dry Pasta, 150g Tomato Sauce, 50g Spinach.",
+        inst: "Brown beef; add sauce and spinach; toss with boiled pasta." },
+      { time: "22:00", name: "Nightly Casein Bolus", p: "25g", c: "15g", f: "16g",
+        ing: "250g Greek Yogurt, 20g Pecans.",
+        inst: "Mix and eat. Supports overnight repair." }
+    ]
+  },
+
+  Wed: {
+    status: "🟢 Restricted Training @ 3PM",
+    totals: { p: "195g", c: "245g", f: "72g" },
+    meals: [
+      { time: "08:30", name: "Protein Oats (Whey)", p: "48g", c: "60g", f: "18g",
+        ing: "80g dry Oats, 300ml Almond Milk, 1.5 scoops Whey, 1 tbsp PB.",
+        inst: "Cook oats in milk, let cool 2 min, whisk in whey." },
+      { time: "12:30", name: "Tuna & Potato Roast", p: "40g", c: "65g", f: "15g",
+        ing: "1 Can Tuna (140g), 300g Potatoes, 100g Spinach.",
+        inst: "Roast potatoes; toss with tuna and spinach (use some oil)." },
+      { time: "17:00", name: "Recovery Fruit Smoothie", p: "42g", c: "35g", f: "6g",
+        ing: "45g Whey, 300ml Almond Milk, 1 Banana.",
+        inst: "Blend until smooth." },
+      { time: "19:30", name: "Savory Tuna Marinara", p: "55g", c: "80g", f: "18g",
+        ing: "1 Can Tuna, 100g dry Pasta, 150g Tomato Sauce, 30g Whey.",
+        inst: "Whisk whey with cold water; heat sauce on low; stir in whey and tuna; toss pasta." },
+      { time: "22:00", name: "Night Repair", p: "10g", c: "5g", f: "15g",
+        ing: "300ml Almond Milk, 30g Pistachios.",
+        inst: "Sip slowly." }
+    ]
+  },
+
+  Thu: {
+    status: "🟡 Rest & Tone (Recomp)",
+    totals: { p: "204g", c: "70g", f: "80g" },
+    meals: [
+      { time: "09:00", name: "Toning Frittata (No Potato)", p: "32g", c: "5g", f: "32g",
+        ing: "4 Eggs, 100g Spinach, 50g Cheese.",
+        inst: "Whisk and cook with spinach; skip starchy side." },
+      { time: "13:00", name: "Lean Chicken & Spinach Roast", p: "65g", c: "30g", f: "8g",
+        ing: "200g Chicken Breast, 150g Potato, 200g Spinach.",
+        inst: "Roast chicken and potato; serve over spinach." },
+      { time: "16:30", name: "Greek Yogurt Bolus", p: "30g", c: "20g", f: "2g",
+        ing: "300g Greek Yogurt, 100g Berries.",
+        inst: "Quick bolus to sustain amino acids." },
+      { time: "19:30", name: "No-Starch Beef Skillet", p: "42g", c: "5g", f: "34g",
+        ing: "170g Ground Beef, 150g Spinach, 30g Cheese.",
+        inst: "Brown beef; add spinach; top with cheese." },
+      { time: "21:30", name: "Toning Whey Pudding", p: "35g", c: "10g", f: "4g",
+        ing: "45g Whey, 150ml Almond Milk.",
+        inst: "Whisk into thick pudding-like consistency." }
+    ]
+  }
 };
-card.innerHTML = <div class="meal-header"> <span class="meal-time">${m.time}</span> <span class="meal-macros">P:${m.p} C:${m.c} F:${m.f}</span> </div> <div class="meal-name">${m.name}</div> <div class="recipe-drawer"> <div class="ingredients"><strong>Ingredients:</strong><br>${m.ing}</div> <div class="instructions"><strong>Recipe:</strong> ${m.inst}</div> </div>;
-container.appendChild(card);
-});
+
+/* create other days by cloning Mon or Wed as appropriate for demo */
+plans.Tue = JSON.parse(JSON.stringify(plans.Mon));
+plans.Sat = JSON.parse(JSON.stringify(plans.Mon));
+plans.Fri = JSON.parse(JSON.stringify(plans.Wed));
+plans.Sun = JSON.parse(JSON.stringify(plans.Thu));
+
+/* ---- Utilities & rendering ---- */
+function setDay(day, btnEl) {
+  // set active button
+  document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active'));
+  if (btnEl) btnEl.classList.add('active');
+
+  renderDay(day);
 }
+
+function renderDay(day) {
+  const data = plans[day];
+  if (!data) {
+    console.warn('No plan for', day);
+    document.getElementById('sub-status').innerText = 'No data';
+    document.getElementById('totalsDisplay').innerHTML = '';
+    document.getElementById('mealContainer').innerHTML = '';
+    return;
+  }
+
+  // status
+  document.getElementById('sub-status').innerText = data.status;
+
+  // totals
+  const totalsHTML = `
+    <div class="total-item"><span class="total-val">${data.totals.p}</span><span class="total-label">Protein</span></div>
+    <div class="total-item"><span class="total-val">${data.totals.c}</span><span class="total-label">Carbs</span></div>
+    <div class="total-item"><span class="total-val">${data.totals.f}</span><span class="total-label">Fats</span></div>
+  `;
+  document.getElementById('totalsDisplay').innerHTML = totalsHTML;
+
+  // meals
+  const container = document.getElementById('mealContainer');
+  container.innerHTML = '';
+  data.meals.forEach((m, idx) => {
+    const card = document.createElement('div');
+    card.className = 'meal-card';
+    card.tabIndex = 0;
+
+    // clicking or pressing Enter/Space toggles drawer
+    card.addEventListener('click', () => {
+      const d = card.querySelector('.recipe-drawer');
+      d.classList.toggle('open');
+    });
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        const d = card.querySelector('.recipe-drawer');
+        d.classList.toggle('open');
+      }
+    });
+
+    card.innerHTML = `
+      <div class="meal-header">
+        <div>
+          <div class="meal-time">${m.time}</div>
+          <div class="meal-name">${m.name}</div>
+        </div>
+        <div class="meal-macros">P: ${m.p} &nbsp; C: ${m.c} &nbsp; F: ${m.f}</div>
+      </div>
+      <div class="recipe-drawer">
+        <div class="ingredients"><strong>Ingredients:</strong><br>${m.ing}</div>
+        <div class="instructions"><strong>Method:</strong> ${m.inst}</div>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+/* toggle plan vs shopping */
 function toggleView(view) {
-document.getElementById('main-view').style.display = view === 'plan'? 'block' : 'none';
-document.getElementById('shopping-view').className = view === 'shop'? 'shopping-list active' : 'shopping-list';
-document.getElementById('planNav').className = view === 'plan'? 'nav-item active' : 'nav-item';
-document.getElementById('shopNav').className = view === 'shop'? 'nav-item active' : 'nav-item';
+  const main = document.getElementById('main-view');
+  const shop = document.getElementById('shopping-view');
+  const planNav = document.getElementById('planNav');
+  const shopNav = document.getElementById('shopNav');
+
+  if (view === 'shop') {
+    main.style.display = 'none';
+    shop.classList.add('active');
+    planNav.classList.remove('active');
+    shopNav.classList.add('active');
+  } else {
+    main.style.display = 'block';
+    shop.classList.remove('active');
+    planNav.classList.add('active');
+    shopNav.classList.remove('active');
+  }
 }
-renderDay('Thu'); // Default to current WHOOP date
+
+/* shopping persistence */
+document.querySelectorAll('[data-shop]').forEach(cb => {
+  const key = 'shop_' + cb.dataset.shop;
+  cb.checked = localStorage.getItem(key) === 'true';
+  cb.addEventListener('change', () => {
+    localStorage.setItem(key, cb.checked);
+  });
+});
+
+/* initialize: set default day and active button */
+(function init() {
+  // default to Thu
+  const defaultDay = 'Thu';
+  // mark the button active
+  const btns = document.querySelectorAll('.day-btn');
+  btns.forEach(b => b.classList.remove('active'));
+  const btnForDay = Array.from(btns).find(b => b.textContent.trim().startsWith(defaultDay));
+  if (btnForDay) btnForDay.classList.add('active');
+
+  renderDay(defaultDay);
+})();
 </script>
 </body>
 </html>
