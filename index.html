@@ -1,474 +1,455 @@
-
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Olympic Performance Nutrition</title>
-  <!-- Link to your existing stylesheet. Change filename if needed -->
-  <link rel="stylesheet" href="styles.css" />
-  <style>
-    /* Minimal fallback styles if no external CSS is present.
-       These are intentionally light so your current stylesheet stays authoritative. */
-    body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; margin: 0; color: #111; background: #f7f7f7; }
-    header, footer { padding: 1rem 1.25rem; background: #0f1720; color: #fff; }
-    main { padding: 1.25rem; max-width: 1100px; margin: 0 auto; }
-    h1, h2, h3, h4 { margin: .25rem 0 .75rem 0; }
-    .menu-content { background: #fff; padding: 1rem; border-radius: 8px; box-shadow: 0 6px 18px rgba(0,0,0,0.06); }
-    .macro-table { width: 100%; border-collapse: collapse; margin: .5rem 0 1rem 0; }
-    .macro-table th, .macro-table td { border: 1px solid #e6e6e6; padding: .5rem .6rem; text-align: left; font-size: .95rem; }
-    .day-plan { margin-bottom: 1.25rem; }
-    .recipes ol { padding-left: 1.1rem; }
-    .shopping-list ul { padding-left: 1.1rem; }
-    .small-note { font-size: .9rem; color: #555; margin-top: .75rem; }
-    @media (max-width: 760px) {
-      main { padding: .75rem; }
-      .macro-table th, .macro-table td { font-size: .85rem; }
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>Master Weightlifter Hub</title>
+<style>
+:root {
+  --whoop-green: #2ecc71;
+  --whoop-yellow: #f1c40f;
+  --whoop-red: #e74c3c;
+  --bg: #121212;
+  --card: #1c1c1e;
+  --accent: #0A84FF;
+  --text: #ffffff;
+  --text-dim: #8e8e93;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  margin: 0;
+  padding: 0;
+  -webkit-user-select: none;
+}
+.header {
+  padding: 25px 20px 10px 20px;
+  background: #000;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 1px solid #333;
+}
+.header h1 { font-size: 1.2rem; margin: 0; letter-spacing: 1px; color: var(--whoop-yellow); }
+.header p { font-size: 0.8rem; color: var(--text-dim); margin: 5px 0 0 0; }
+.day-nav {
+  display: flex;
+  overflow-x: auto;
+  padding: 15px 10px;
+  gap: 10px;
+  scrollbar-width: none;
+}
+.day-nav::-webkit-scrollbar { display: none; }
+.day-btn {
+  background: var(--card);
+  border: 1px solid #333;
+  color: var(--text);
+  padding: 10px 18px;
+  border-radius: 20px;
+  white-space: nowrap;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.day-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.container { padding: 0 15px 100px 15px; }
+.section-title {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  margin: 20px 0 10px 5px;
+  letter-spacing: 1px;
+}
+.daily-totals {
+  background: linear-gradient(145deg, #2c2c2e, #1c1c1e);
+  border-radius: 15px;
+  padding: 15px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #333;
+}
+.total-item { text-align: center; }
+.total-val { display: block; font-size: 1.1rem; font-weight: bold; color: var(--accent); }
+.total-label { font-size: 0.7rem; color: var(--text-dim); }
+.meal-card {
+  background: var(--card);
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 12px;
+  border: 1px solid #333;
+  transition: all 0.2s;
+}
+.meal-card:active { transform: scale(0.98); background: #2c2c2e; }
+.meal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.meal-time { font-size: 0.75rem; color: var(--accent); font-weight: bold; }
+.meal-name { font-size: 1rem; font-weight: 600; }
+.meal-macros { font-size: 0.8rem; color: var(--text-dim); }
+.recipe-drawer {
+  display: none;
+  padding-top: 15px;
+  border-top: 1px solid #333;
+  margin-top: 10px;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.recipe-drawer.open { display: block; }
+.ingredients { margin-bottom: 10px; color: var(--text); }
+.instructions { color: var(--text-dim); font-size: 0.85rem; }
+.shopping-list {
+  display: none;
+}
+.shopping-list.active {
+  display: block;
+}
+.shop-item {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  border-bottom: 1px solid #333;
+}
+.shop-item input { margin-right: 15px; width: 18px; height: 18px; }
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #000;
+  display: flex;
+  justify-content: space-around;
+  padding: 15px 0 30px 0;
+  border-top: 1px solid #333;
+}
+.nav-item { text-align: center; color: var(--text-dim); font-size: 0.7rem; text-decoration: none; cursor:pointer; }
+.nav-item.active { color: var(--accent); }
+.nav-icon { display: block; font-size: 1.4rem; margin-bottom: 4px; }
+</style>
 </head>
 <body>
-  <header>
-    <h1>Olympic Performance Nutrition</h1>
-    <p style="margin:0.25rem 0 0 0; font-size:0.95rem;">7 Day Strategy for Master Athlete Strength and Recomposition</p>
-  </header>
+<div class="header">
+  <h1>OLY PERFORMANCE HUB</h1>
+  <p id="sub-status">🟢 Loading Athlete Profile...</p>
+</div>
 
-  <main>
-    <!-- Full nutrition menu content -->
-    <!-- BEGIN NUTRITION MENU: FULL PAGE CONTENT -->
-    <section id="nutrition-menu" class="menu-content" aria-labelledby="nutrition-title">
-      <h2 id="nutrition-title">Olympic Performance Nutritional Framework: 7 Day Strategy</h2>
+<div id="main-view">
+  <div class="day-nav" id="dayNav">
+    <button class="day-btn" onclick="setDay('Mon', this)">Mon</button>
+    <button class="day-btn" onclick="setDay('Tue', this)">Tue</button>
+    <button class="day-btn" onclick="setDay('Wed', this)">Wed</button>
+    <button class="day-btn" onclick="setDay('Thu', this)">Thu</button>
+    <button class="day-btn" onclick="setDay('Fri', this)">Fri</button>
+    <button class="day-btn" onclick="setDay('Sat', this)">Sat</button>
+    <button class="day-btn" onclick="setDay('Sun', this)">Sun</button>
+  </div>
 
-      <p><strong>Athlete Profile</strong>: 56 Years | 93 kg | 177 cm</p>
-      <p><strong>Primary Objectives</strong>: Strength accretion and body recomposition, with even protein boluses to overcome anabolic resistance</p>
-      <p><strong>Baseline Biometrics</strong>: Yellow Recovery 63 percent, Whoop recovery metrics monitored for RHR and HRV</p>
+  <div class="container">
+    <div class="section-title">Daily Energy Targets</div>
+    <div class="daily-totals" id="totalsDisplay"></div>
 
-      <p>This framework is engineered to overcome age related anabolic resistance by ensuring a consistent 35 g to 40 g protein bolus every 3 to 4 hours. Every feeding is designed to reach the 3 g leucine threshold, the critical amino acid trigger required to maximally stimulate muscle protein synthesis in master athletes.</p>
+    <div class="section-title">Meal Schedule</div>
+    <div id="mealContainer"></div>
+  </div>
+</div>
 
-      <h3>7 Day Performance Calendar</h3>
+<div id="shopping-view" class="shopping-list">
+  <div class="container">
+    <div class="section-title">Weekly Grocery Inventory</div>
+    <div style="background:var(--card); border-radius:15px; padding:10px;">
+      <div class="shop-item"><input type="checkbox" data-shop="chicken"> 900g Chicken Breast</div>
+      <div class="shop-item"><input type="checkbox" data-shop="beef"> 900g Ground Beef (90%)</div>
+      <div class="shop-item"><input type="checkbox" data-shop="tuna"> 6 Cans Solid Tuna (Olive Oil)</div>
+      <div class="shop-item"><input type="checkbox" data-shop="eggs"> 2 Dozen Large Eggs</div>
+      <div class="shop-item"><input type="checkbox" data-shop="whey"> 1.5kg Whey Isolate Powder</div>
+      <div class="shop-item"><input type="checkbox" data-shop="yogurt"> 1.5kg Plain Greek Yogurt</div>
+      <div class="shop-item"><input type="checkbox" data-shop="potatoes"> 4kg Russet/Red Potatoes</div>
+      <div class="shop-item"><input type="checkbox" data-shop="spinach"> 8 Bags Fresh Spinach</div>
+      <div class="shop-item"><input type="checkbox" data-shop="tomatoes"> 4 Pints Cherry Tomatoes</div>
+      <div class="shop-item"><input type="checkbox" data-shop="bananas"> 15 Large Bananas</div>
+      <div class="shop-item"><input type="checkbox" data-shop="pasta"> 2 Boxes Whole Wheat Pasta</div>
+      <div class="shop-item"><input type="checkbox" data-shop="milk"> 6 Liters Almond Milk (Unsw)</div>
+      <div class="shop-item"><input type="checkbox" data-shop="oats"> 1kg Rolled Oats</div>
+      <div class="shop-item"><input type="checkbox" data-shop="cheese"> 250g Block Hard Cheese</div>
+      <div class="shop-item"><input type="checkbox" data-shop="nuts"> Mixed Nuts (Almonds/Pecans)</div>
+    </div>
+  </div>
+</div>
 
-      <p><strong>Monday and Tuesday</strong>: High intensity, training at 3 PM. Nutritional goal: Support maximal force production and rapid glycogen recovery.</p>
+<div class="bottom-nav">
+  <div class="nav-item active" id="planNav" onclick="toggleView('plan')">
+    <span class="nav-icon">📅</span>PLAN
+  </div>
+  <div class="nav-item" id="shopNav" onclick="toggleView('shop')">
+    <span class="nav-icon">🛒</span>GROCERIES
+  </div>
+</div>
 
-      <table class="macro-table" aria-describedby="monday-tuesday-note">
-        <thead>
-          <tr>
-            <th>Time</th>
-            <th>Meal</th>
-            <th>Gram specific components</th>
-            <th>Protein</th>
-            <th>Carbs</th>
-            <th>Fat</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>08:30</td>
-            <td>Breakfast</td>
-            <td>4 eggs, 30 g cheese, 150 g potato, 100 g spinach</td>
-            <td>35 g</td>
-            <td>35 g</td>
-            <td>28 g</td>
-          </tr>
-          <tr>
-            <td>12:30</td>
-            <td>Pre Tr</td>
-            <td>170 g chicken breast, 80 g dry oats savory, tomatoes</td>
-            <td>55 g</td>
-            <td>55 g</td>
-            <td>10 g</td>
-          </tr>
-          <tr>
-            <td>17:00</td>
-            <td>Post Tr</td>
-            <td>45 g whey, 300 ml almond milk, 1 large banana, 50 g fruit</td>
-            <td>42 g</td>
-            <td>45 g</td>
-            <td>6 g</td>
-          </tr>
-          <tr>
-            <td>19:30</td>
-            <td>Dinner</td>
-            <td>170 g ground beef, 100 g dry pasta, 150 g tomato sauce</td>
-            <td>45 g</td>
-            <td>75 g</td>
-            <td>28 g</td>
-          </tr>
-          <tr>
-            <td>22:00</td>
-            <td>Sleep</td>
-            <td>250 g Greek yogurt, 20 g pecans</td>
-            <td>25 g</td>
-            <td>15 g</td>
-            <td>16 g</td>
-          </tr>
-          <tr>
-            <td colspan="3"><strong>TOTAL approximate</strong></td>
-            <td><strong>202 g</strong></td>
-            <td><strong>225 g</strong></td>
-            <td><strong>88 g</strong></td>
-          </tr>
-        </tbody>
-      </table>
+<script>
+/* ---- Data: weekly plans updated to your 7 day framework ---- */
+const plans = {
+  Mon: {
+    status: "🟡 High Intensity Training @ 3 PM",
+    totals: { p: "202g", c: "225g", f: "88g" },
+    meals: [
+      { time: "08:30", name: "Breakfast — Recovery Frittata", p: "35g", c: "35g", f: "28g",
+        ing: "4 Eggs, 30g Cheese, 150g Potato, 100g Spinach.",
+        inst: "Sauté potatoes; wilt spinach. Whisk eggs and pour over; cook on medium low until set." },
+      { time: "12:30", name: "Pre Tr — Chicken and Savory Oats", p: "55g", c: "55g", f: "10g",
+        ing: "170g Chicken Breast, 80g dry Rolled Oats (savory), Cherry Tomatoes.",
+        inst: "Cook oats; grill chicken. Serve together with tomatoes." },
+      { time: "17:00", name: "Post Tr — Rebuild Smoothie", p: "42g", c: "45g", f: "6g",
+        ing: "45g Whey, 300ml Almond Milk, 1 Large Banana, 50g Fruit.",
+        inst: "Blend until smooth for rapid glycogen and protein delivery." },
+      { time: "19:30", name: "Dinner — Beef and Pasta Skillet", p: "45g", c: "75g", f: "28g",
+        ing: "170g Ground Beef, 100g dry Pasta, 150g Tomato Sauce.",
+        inst: "Brown beef; add sauce and simmer. Toss with cooked pasta." },
+      { time: "22:00", name: "Sleep — Greek Yogurt Bolus", p: "25g", c: "15g", f: "16g",
+        ing: "250g Plain Greek Yogurt, 20g Pecans.",
+        inst: "Mix and eat to supply overnight amino acids." }
+    ]
+  },
 
-      <h4>Wednesday: Restricted performance, training at 3 PM</h4>
-      <p>Nutritional goal: Meat, dairy and egg free protocol utilizing tuna and the whey loophole.</p>
+  Tue: {
+    status: "🟡 High Intensity Training @ 3 PM",
+    totals: { p: "202g", c: "225g", f: "88g" },
+    meals: [
+      { time: "08:30", name: "Breakfast — Recovery Frittata", p: "35g", c: "35g", f: "28g",
+        ing: "4 Eggs, 30g Cheese, 150g Potato, 100g Spinach.",
+        inst: "Sauté potatoes; wilt spinach. Whisk eggs and pour over; cook on medium low until set." },
+      { time: "12:30", name: "Pre Tr — Chicken and Savory Oats", p: "55g", c: "55g", f: "10g",
+        ing: "170g Chicken Breast, 80g dry Rolled Oats (savory), Cherry Tomatoes.",
+        inst: "Cook oats; grill chicken. Serve together with tomatoes." },
+      { time: "17:00", name: "Post Tr — Rebuild Smoothie", p: "42g", c: "45g", f: "6g",
+        ing: "45g Whey, 300ml Almond Milk, 1 Large Banana, 50g Fruit.",
+        inst: "Blend until smooth for rapid glycogen and protein delivery." },
+      { time: "19:30", name: "Dinner — Beef and Pasta Skillet", p: "45g", c: "75g", f: "28g",
+        ing: "170g Ground Beef, 100g dry Pasta, 150g Tomato Sauce.",
+        inst: "Brown beef; add sauce and simmer. Toss with cooked pasta." },
+      { time: "22:00", name: "Sleep — Greek Yogurt Bolus", p: "25g", c: "15g", f: "16g",
+        ing: "250g Plain Greek Yogurt, 20g Pecans.",
+        inst: "Mix and eat to supply overnight amino acids." }
+    ]
+  },
 
-      <table class="macro-table">
-        <thead>
-          <tr>
-            <th>Time</th>
-            <th>Meal</th>
-            <th>Gram specific components</th>
-            <th>Protein</th>
-            <th>Carbs</th>
-            <th>Fat</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>08:30</td>
-            <td>Breakfast</td>
-            <td>80 g dry oats, 300 ml almond milk, 45 g whey, 15 g peanut butter</td>
-            <td>48 g</td>
-            <td>60 g</td>
-            <td>18 g</td>
-          </tr>
-          <tr>
-            <td>12:30</td>
-            <td>Pre Tr</td>
-            <td>1 can tuna (140 g), 300 g potatoes, 100 g spinach</td>
-            <td>40 g</td>
-            <td>65 g</td>
-            <td>15 g</td>
-          </tr>
-          <tr>
-            <td>17:00</td>
-            <td>Post Tr</td>
-            <td>45 g whey, 300 ml almond milk, 1 large banana</td>
-            <td>42 g</td>
-            <td>35 g</td>
-            <td>6 g</td>
-          </tr>
-          <tr>
-            <td>19:30</td>
-            <td>Dinner</td>
-            <td>1 can tuna, 100 g dry pasta, 30 g whey, 150 g sauce</td>
-            <td>55 g</td>
-            <td>80 g</td>
-            <td>18 g</td>
-          </tr>
-          <tr>
-            <td>22:00</td>
-            <td>Sleep</td>
-            <td>300 ml almond milk, 30 g pistachios</td>
-            <td>10 g</td>
-            <td>5 g</td>
-            <td>15 g</td>
-          </tr>
-          <tr>
-            <td colspan="3"><strong>TOTAL approximate</strong></td>
-            <td><strong>195 g</strong></td>
-            <td><strong>245 g</strong></td>
-            <td><strong>72 g</strong></td>
-          </tr>
-        </tbody>
-      </table>
+  Wed: {
+    status: "🟢 Restricted Performance @ 3 PM",
+    totals: { p: "195g", c: "245g", f: "72g" },
+    meals: [
+      { time: "08:30", name: "Breakfast — Protein Oats (Whey)", p: "48g", c: "60g", f: "18g",
+        ing: "80g dry Oats, 300ml Almond Milk, 45g Whey, 15g Peanut Butter.",
+        inst: "Cook oats in almond milk; stir or whisk in whey after slightly cooled." },
+      { time: "12:30", name: "Pre Tr — Tuna and Potatoes", p: "40g", c: "65g", f: "15g",
+        ing: "1 Can Tuna (140g), 300g Potatoes, 100g Spinach.",
+        inst: "Roast or boil potatoes; combine with tuna and spinach." },
+      { time: "17:00", name: "Post Tr — Recovery Smoothie", p: "42g", c: "35g", f: "6g",
+        ing: "45g Whey, 300ml Almond Milk, 1 Large Banana.",
+        inst: "Blend until smooth." },
+      { time: "19:30", name: "Dinner — Savory Tuna Marinara", p: "55g", c: "80g", f: "18g",
+        ing: "1 Can Tuna, 100g dry Pasta, 30g Whey (made into paste), 150g Tomato Sauce.",
+        inst: "Make whey paste with cold water; heat sauce low; stir whey paste and tuna then toss with pasta." },
+      { time: "22:00", name: "Sleep — Almond Milk and Nuts", p: "10g", c: "5g", f: "15g",
+        ing: "300ml Almond Milk, 30g Pistachios.",
+        inst: "Sip slowly as a light pre sleep snack." }
+    ]
+  },
 
-      <h4>Thursday: Rest and recomposition, no training</h4>
-      <p>Nutritional goal: Moderated carbohydrates to facilitate fat oxidation and toning.</p>
+  Thu: {
+    status: "🟡 Rest and Recomposition",
+    totals: { p: "204g", c: "70g", f: "80g" },
+    meals: [
+      { time: "09:00", name: "Breakfast — Toning Frittata", p: "32g", c: "5g", f: "32g",
+        ing: "4 Eggs, 100g Spinach, 50g Cheese, 50g Tomatoes.",
+        inst: "Whisk eggs and cook with spinach; add cheese; skip starchy sides." },
+      { time: "13:00", name: "Lunch — Lean Chicken and Spinach", p: "65g", c: "30g", f: "8g",
+        ing: "200g Chicken Breast, 150g Potato, 200g Spinach.",
+        inst: "Roast chicken and potato; serve over spinach." },
+      { time: "16:30", name: "Snack — Greek Yogurt Bolus", p: "30g", c: "20g", f: "2g",
+        ing: "300g Plain Greek Yogurt, 100g Assorted Fruit.",
+        inst: "Quick bolus to supply amino acids between meals." },
+      { time: "19:30", name: "Dinner — No Starch Beef Skillet", p: "42g", c: "5g", f: "34g",
+        ing: "170g Ground Beef, 150g Spinach, 30g Cheese.",
+        inst: "Brown beef; add spinach; top with cheese." },
+      { time: "21:30", name: "Sleep — Toning Whey Pudding", p: "35g", c: "10g", f: "4g",
+        ing: "45g Whey, 150ml Almond Milk (pudding style).",
+        inst: "Whisk whey into milk until thick pudding consistency." }
+    ]
+  },
 
-      <table class="macro-table">
-        <thead>
-          <tr>
-            <th>Time</th>
-            <th>Meal</th>
-            <th>Gram specific components</th>
-            <th>Protein</th>
-            <th>Carbs</th>
-            <th>Fat</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>09:00</td>
-            <td>Breakfast</td>
-            <td>4 eggs, 100 g spinach, 50 g cheese, 50 g tomatoes</td>
-            <td>32 g</td>
-            <td>5 g</td>
-            <td>32 g</td>
-          </tr>
-          <tr>
-            <td>13:00</td>
-            <td>Lunch</td>
-            <td>200 g chicken breast, 150 g potato, 200 g spinach</td>
-            <td>65 g</td>
-            <td>30 g</td>
-            <td>8 g</td>
-          </tr>
-          <tr>
-            <td>16:30</td>
-            <td>Snack</td>
-            <td>300 g Greek yogurt, 100 g assorted fruit</td>
-            <td>30 g</td>
-            <td>20 g</td>
-            <td>2 g</td>
-          </tr>
-          <tr>
-            <td>19:30</td>
-            <td>Dinner</td>
-            <td>170 g ground beef, 150 g spinach, 30 g cheese</td>
-            <td>42 g</td>
-            <td>5 g</td>
-            <td>34 g</td>
-          </tr>
-          <tr>
-            <td>21:30</td>
-            <td>Sleep</td>
-            <td>45 g whey, 150 ml almond milk pudding style</td>
-            <td>35 g</td>
-            <td>10 g</td>
-            <td>4 g</td>
-          </tr>
-          <tr>
-            <td colspan="3"><strong>TOTAL approximate</strong></td>
-            <td><strong>204 g</strong></td>
-            <td><strong>70 g</strong></td>
-            <td><strong>80 g</strong></td>
-          </tr>
-        </tbody>
-      </table>
+  Fri: {
+    status: "🟡 Restricted / Saturday Load @ 3 PM",
+    totals: { p: "184g", c: "330g", f: "64g" },
+    meals: [
+      { time: "08:30", name: "Breakfast — Whey Oats", p: "45g", c: "65g", f: "12g",
+        ing: "45g Whey, 50g dry Oats, 1 Banana, 300ml Almond Milk.",
+        inst: "Blend or mix oats and whey as preferred." },
+      { time: "12:30", name: "Pre Tr — Tuna Pasta PB Boost", p: "35g", c: "75g", f: "24g",
+        ing: "100g dry Pasta, 30g Peanut Butter, 1 Can Tuna (140g).",
+        inst: "Cook pasta; toss with tuna and a spoon of peanut butter for calories." },
+      { time: "17:00", name: "Post Tr — Rebuild Smoothie", p: "42g", c: "45g", f: "6g",
+        ing: "45g Whey, 300ml Almond Milk, 1 Banana, 50g Fruit.",
+        inst: "Blend until smooth." },
+      { time: "19:30", name: "Dinner — Carb Load Pasta & Tuna", p: "62g", c: "145g", f: "22g",
+        ing: "150g dry Pasta, 1 Can Tuna, 30g Whey, 1 Potato.",
+        inst: "Cook pasta and potato; mix in tuna and whey paste; serve hot." }
+    ]
+  },
 
-      <h4>Friday: Restricted, training at 3 PM</h4>
-      <p>Nutritional goal: Large evening carbohydrate serving to saturate Saturday morning glycogen.</p>
+  Sat: {
+    status: "🟡 Peak Effort Training @ 9 AM",
+    totals: { p: "198g", c: "170g", f: "94g" },
+    meals: [
+      { time: "07:30", name: "Pre Tr — Fast Fuel Shake", p: "40g", c: "30g", f: "5g",
+        ing: "45g Whey, 250ml Almond Milk, 1 Banana (blended).",
+        inst: "Blend and drink 45 to 60 minutes prior to session." },
+      { time: "11:00", name: "Recovery Brunch", p: "38g", c: "50g", f: "35g",
+        ing: "4 Eggs, 250g Potatoes, 50g Cheese, 100g Spinach.",
+        inst: "Cook potatoes; make eggs to preference; add spinach and cheese." },
+      { time: "14:30", name: "Lunch — Chicken and Yogurt", p: "65g", c: "25g", f: "6g",
+        ing: "150g Chicken Breast, 250g Plain Greek Yogurt, 50g Fruit.",
+        inst: "Serve grilled chicken with a large yogurt side and fruit." },
+      { time: "18:30", name: "Dinner — Beef Pasta", p: "45g", c: "60g", f: "28g",
+        ing: "170g Ground Beef, 80g dry Pasta, 100g Tomato Sauce.",
+        inst: "Brown beef; add sauce and toss with pasta." },
+      { time: "21:30", name: "Sleep — Mixed Nuts Snack", p: "10g", c: "5g", f: "20g",
+        ing: "30g Mixed Nuts, 300ml Almond Milk.",
+        inst: "Light snack to finish the day." }
+    ]
+  },
 
-      <table class="macro-table">
-        <thead>
-          <tr>
-            <th>Time</th>
-            <th>Meal</th>
-            <th>Gram specific components</th>
-            <th>Protein</th>
-            <th>Carbs</th>
-            <th>Fat</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>08:30</td>
-            <td>Breakfast</td>
-            <td>45 g whey, 50 g dry oats, 1 banana, 300 ml almond milk</td>
-            <td>45 g</td>
-            <td>65 g</td>
-            <td>12 g</td>
-          </tr>
-          <tr>
-            <td>12:30</td>
-            <td>Pre Tr</td>
-            <td>100 g dry pasta, 30 g PB, 1 can tuna (140 g)</td>
-            <td>35 g</td>
-            <td>75 g</td>
-            <td>24 g</td>
-          </tr>
-          <tr>
-            <td>17:00</td>
-            <td>Post Tr</td>
-            <td>45 g whey, 300 ml almond milk, 1 banana, 50 g fruit</td>
-            <td>42 g</td>
-            <td>45 g</td>
-            <td>6 g</td>
-          </tr>
-          <tr>
-            <td>19:30</td>
-            <td>Dinner</td>
-            <td>150 g dry pasta, 1 can tuna, 30 g whey, 1 potato</td>
-            <td>62 g</td>
-            <td>145 g</td>
-            <td>22 g</td>
-          </tr>
-          <tr>
-            <td colspan="3"><strong>TOTAL approximate</strong></td>
-            <td><strong>184 g</strong></td>
-            <td><strong>330 g</strong></td>
-            <td><strong>64 g</strong></td>
-          </tr>
-        </tbody>
-      </table>
+  Sun: {
+    status: "🟢 Systemic Reset, No Training",
+    totals: { p: "201g", c: "125g", f: "82g" },
+    meals: [
+      { time: "09:30", name: "Breakfast — Fruit and Eggs", p: "28g", c: "35g", f: "22g",
+        ing: "4 Eggs, 1 Large Banana, 150g Assorted Fruit.",
+        inst: "Cook eggs and enjoy with fruit on the side." },
+      { time: "13:30", name: "Lunch — Tuna Spinach Salad", p: "65g", c: "15g", f: "24g",
+        ing: "2 Cans Tuna (280g), 100g Spinach, 100g Cherry Tomatoes.",
+        inst: "Toss ingredients with a splash of olive oil if desired." },
+      { time: "16:30", name: "Snack — PB Banana", p: "8g", c: "35g", f: "16g",
+        ing: "1 Banana, 30g Peanut Butter.",
+        inst: "Slice banana and top with peanut butter." },
+      { time: "19:30", name: "Dinner — Chicken Dinner", p: "65g", c: "30g", f: "8g",
+        ing: "200g Chicken Breast, 150g Potato, 100g Spinach.",
+        inst: "Roast chicken and potato; serve with spinach." },
+      { time: "22:00", name: "Sleep — Whey Night Bolus", p: "35g", c: "10g", f: "12g",
+        ing: "45g Whey, 150ml Almond Milk, 15g Pistachios.",
+        inst: "Whisk whey into milk and sip before bed." }
+    ]
+  }
+};
 
-      <h4>Saturday: Peak effort, training at 9 AM</h4>
-      <p>Nutritional goal: Rapidly digested pre session fuel and massive recovery brunch.</p>
+/* ---- Utilities & rendering (unchanged UI behavior) ---- */
 
-      <table class="macro-table">
-        <thead>
-          <tr>
-            <th>Time</th>
-            <th>Meal</th>
-            <th>Gram specific components</th>
-            <th>Protein</th>
-            <th>Carbs</th>
-            <th>Fat</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>07:30</td>
-            <td>Pre Tr</td>
-            <td>45 g whey, 250 ml almond milk, 1 banana blended</td>
-            <td>40 g</td>
-            <td>30 g</td>
-            <td>5 g</td>
-          </tr>
-          <tr>
-            <td>11:00</td>
-            <td>Recovery</td>
-            <td>4 eggs, 250 g potatoes, 50 g cheese, 100 g spinach</td>
-            <td>38 g</td>
-            <td>50 g</td>
-            <td>35 g</td>
-          </tr>
-          <tr>
-            <td>14:30</td>
-            <td>Lunch</td>
-            <td>150 g chicken breast, 250 g Greek yogurt, 50 g fruit</td>
-            <td>65 g</td>
-            <td>25 g</td>
-            <td>6 g</td>
-          </tr>
-          <tr>
-            <td>18:30</td>
-            <td>Dinner</td>
-            <td>170 g ground beef, 80 g dry pasta, 100 g sauce</td>
-            <td>45 g</td>
-            <td>60 g</td>
-            <td>28 g</td>
-          </tr>
-          <tr>
-            <td>21:30</td>
-            <td>Sleep</td>
-            <td>30 g mixed nuts, 300 ml almond milk</td>
-            <td>10 g</td>
-            <td>5 g</td>
-            <td>20 g</td>
-          </tr>
-          <tr>
-            <td colspan="3"><strong>TOTAL approximate</strong></td>
-            <td><strong>198 g</strong></td>
-            <td><strong>170 g</strong></td>
-            <td><strong>94 g</strong></td>
-          </tr>
-        </tbody>
-      </table>
+function setDay(day, btnEl) {
+  // set active button
+  document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active'));
+  if (btnEl) btnEl.classList.add('active');
 
-      <h4>Sunday: Systemic reset, no training</h4>
-      <p>Nutritional goal: Support central nervous system restoration via omega 3s and minerals.</p>
+  renderDay(day);
+}
 
-      <table class="macro-table">
-        <thead>
-          <tr>
-            <th>Time</th>
-            <th>Meal</th>
-            <th>Gram specific components</th>
-            <th>Protein</th>
-            <th>Carbs</th>
-            <th>Fat</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>09:30</td>
-            <td>Breakfast</td>
-            <td>4 eggs, 1 large banana, 150 g assorted fruit</td>
-            <td>28 g</td>
-            <td>35 g</td>
-            <td>22 g</td>
-          </tr>
-          <tr>
-            <td>13:30</td>
-            <td>Lunch</td>
-            <td>2 cans tuna (280 g), 100 g spinach, 100 g tomatoes</td>
-            <td>65 g</td>
-            <td>15 g</td>
-            <td>24 g</td>
-          </tr>
-          <tr>
-            <td>16:30</td>
-            <td>Snack</td>
-            <td>1 banana, 30 g peanut butter</td>
-            <td>8 g</td>
-            <td>35 g</td>
-            <td>16 g</td>
-          </tr>
-          <tr>
-            <td>19:30</td>
-            <td>Dinner</td>
-            <td>200 g chicken breast, 150 g potato, 100 g spinach</td>
-            <td>65 g</td>
-            <td>30 g</td>
-            <td>8 g</td>
-          </tr>
-          <tr>
-            <td>22:00</td>
-            <td>Sleep</td>
-            <td>45 g whey, 150 ml almond milk, 15 g pistachios</td>
-            <td>35 g</td>
-            <td>10 g</td>
-            <td>12 g</td>
-          </tr>
-          <tr>
-            <td colspan="3"><strong>TOTAL approximate</strong></td>
-            <td><strong>201 g</strong></td>
-            <td><strong>125 g</strong></td>
-            <td><strong>82 g</strong></td>
-          </tr>
-        </tbody>
-      </table>
+function renderDay(day) {
+  const data = plans[day];
+  if (!data) {
+    console.warn('No plan for', day);
+    document.getElementById('sub-status').innerText = 'No data';
+    document.getElementById('totalsDisplay').innerHTML = '';
+    document.getElementById('mealContainer').innerHTML = '';
+    return;
+  }
 
-      <h3>Master Athlete Recipe Database</h3>
-      <section class="recipes">
-        <ol>
-          <li>
-            <strong>The Whey Tomato Paste Technique</strong>
-            <p>To prevent clumping or curdling in hot sauces, mix 30 g (1 scoop) of unflavored whey powder with 2 tablespoons of cold water or almond milk to create a thick, smooth paste. Gradually stir this paste into your tomato sauce over low heat only after the sauce is warm.</p>
-          </li>
-          <li>
-            <strong>Savory Tuna Marinara</strong>
-            <p>Ingredients: 100 g dry pasta, 150 g tomato sauce, 1 can solid tuna (drained), 30 g whey powder made into a paste. Method: Boil pasta. Heat sauce on low. Stir in whey paste and tuna. Toss with pasta and top with spinach.</p>
-          </li>
-          <li>
-            <strong>Master Recovery Frittata</strong>
-            <p>Ingredients: 4 eggs, 30 g cheese, 100 g spinach, 50 g cherry tomatoes, 150 g potato cubed. Method: Sautée potatoes until golden. Add tomatoes and spinach until wilted. Whisk eggs and pour over mixture. Top with cheese and cook on medium low until set.</p>
-          </li>
-          <li>
-            <strong>Toning Whey Pudding</strong>
-            <p>Ingredients: 45 g whey isolate, 150 ml unsweetened almond milk. Method: Whisk whey into milk until a thick pudding consistency. Use as a high protein low carb pre sleep bolus to prevent nocturnal muscle breakdown.</p>
-          </li>
-        </ol>
-      </section>
+  // status
+  document.getElementById('sub-status').innerText = data.status;
 
-      <h3>Weekly Categorized Shopping List</h3>
-      <section class="shopping-list" aria-label="shopping list">
-        <ul>
-          <li><strong>Proteins (Meat and Fish)</strong>: Chicken breast skinless 900 g, Ground beef 900 g, Solid tuna in olive oil 6 cans 140 g each, Whey isolate powder 1.5 kg tub</li>
-          <li><strong>Dairy and chilled</strong>: Eggs 2 dozen large, Plain Greek yogurt 1.5 kg, Hard cheese 250 g block, Almond milk unsweetened 6 liters</li>
-          <li><strong>Produce</strong>: Fresh spinach 8 large bags, Potatoes 4 kg, Bananas 15 large, Cherry tomatoes 4 pints, Assorted fruits 5 packs</li>
-          <li><strong>Pantry and nuts</strong>: Rolled oats 1 kg, Whole wheat pasta 2 boxes, Tomato sauce 4 jars low sugar, Peanut butter 1 large jar, Mixed nuts almonds pecans pistachios</li>
-        </ul>
-      </section>
+  // totals
+  const totalsHTML = `
+    <div class="total-item"><span class="total-val">${data.totals.p}</span><span class="total-label">Protein</span></div>
+    <div class="total-item"><span class="total-val">${data.totals.c}</span><span class="total-label">Carbs</span></div>
+    <div class="total-item"><span class="total-val">${data.totals.f}</span><span class="total-label">Fats</span></div>
+  `;
+  document.getElementById('totalsDisplay').innerHTML = totalsHTML;
 
-      <h3>WHOOP Dynamic Autoregulation</h3>
-      <p>Apply these nutritional shifts based on your morning recovery score to optimize performance and body recomposition:</p>
-      <ul>
-        <li><strong>Green recovery</strong> greater than 67 percent: Your body is primed for high strain. Increase your post workout carbs by 30 g dry pasta or 1 large potato to fuel maximal strength output.</li>
-        <li><strong>Red recovery</strong> less than 33 percent: Significant stress detected. Decrease total training volume by 20 percent and increase your evening healthy fats by 20 g to support nervous system recovery.</li>
-      </ul>
+  // meals
+  const container = document.getElementById('mealContainer');
+  container.innerHTML = '';
+  data.meals.forEach((m, idx) => {
+    const card = document.createElement('div');
+    card.className = 'meal-card';
+    card.tabIndex = 0;
 
-      <p class="small-note">Implementation note: The plan uses only foods you listed and the whey loophole for restricted days. If you want this embedded as a printable PDF or a version with portion images, tell me and I will create it.</p>
-    </section>
-    <!-- END NUTRITION MENU: FULL PAGE CONTENT -->
+    // clicking or pressing Enter/Space toggles drawer
+    card.addEventListener('click', () => {
+      const d = card.querySelector('.recipe-drawer');
+      d.classList.toggle('open');
+    });
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        const d = card.querySelector('.recipe-drawer');
+        d.classList.toggle('open');
+      }
+    });
 
-  </main>
+    card.innerHTML = `
+      <div class="meal-header">
+        <div>
+          <div class="meal-time">${m.time}</div>
+          <div class="meal-name">${m.name}</div>
+        </div>
+        <div class="meal-macros">P: ${m.p} &nbsp; C: ${m.c} &nbsp; F: ${m.f}</div>
+      </div>
+      <div class="recipe-drawer">
+        <div class="ingredients"><strong>Ingredients:</strong><br>${m.ing}</div>
+        <div class="instructions"><strong>Method:</strong> ${m.inst}</div>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
 
-  <footer>
-    <p style="margin:0">Prepared for master athlete performance. For personalized adjustments, message me the latest Whoop export or any food preferences to refine macros.</p>
-  </footer>
+/* toggle plan vs shopping */
+function toggleView(view) {
+  const main = document.getElementById('main-view');
+  const shop = document.getElementById('shopping-view');
+  const planNav = document.getElementById('planNav');
+  const shopNav = document.getElementById('shopNav');
+
+  if (view === 'shop') {
+    main.style.display = 'none';
+    shop.classList.add('active');
+    planNav.classList.remove('active');
+    shopNav.classList.add('active');
+  } else {
+    main.style.display = 'block';
+    shop.classList.remove('active');
+    planNav.classList.add('active');
+    shopNav.classList.remove('active');
+  }
+}
+
+/* shopping persistence */
+document.querySelectorAll('[data-shop]').forEach(cb => {
+  const key = 'shop_' + cb.dataset.shop;
+  cb.checked = localStorage.getItem(key) === 'true';
+  cb.addEventListener('change', () => {
+    localStorage.setItem(key, cb.checked);
+  });
+});
+
+/* initialize: set default day and active button */
+(function init() {
+  const defaultDay = 'Thu';
+  const btns = document.querySelectorAll('.day-btn');
+  btns.forEach(b => b.classList.remove('active'));
+  const btnForDay = Array.from(btns).find(b => b.textContent.trim().startsWith(defaultDay));
+  if (btnForDay) btnForDay.classList.add('active');
+
+  renderDay(defaultDay);
+})();
+</script>
 </body>
 </html>
