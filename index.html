@@ -440,9 +440,16 @@ document.querySelectorAll('[data-shop]').forEach(cb => {
   });
 });
 
-/* initialize: set default day and active button */
+/* initialize: set default day to device local day and active button */
 (function init() {
-  const defaultDay = 'Thu';
+  // mapping of JS getDay() number to our plan keys
+  const dayMap = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+  // get today's day index from device (uses device local timezone — iPhone will provide local day)
+  let todayIndex = new Date().getDay(); // 0 = Sun, 1 = Mon, ..., 6 = Sat
+  let defaultDay = dayMap[todayIndex] || 'Thu';
+
+  // mark the button active (if a button exists for that day)
   const btns = document.querySelectorAll('.day-btn');
   btns.forEach(b => b.classList.remove('active'));
   const btnForDay = Array.from(btns).find(b => b.textContent.trim().startsWith(defaultDay));
